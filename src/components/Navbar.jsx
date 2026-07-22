@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Dumbbell } from "lucide-react";
-import { club } from "../data/club";
+import { Menu, X, Dumbbell, LayoutDashboard, LogOut } from "lucide-react";
+import { useAuth } from "../lib/AuthContext";
 
 const links = [
   { to: "/", label: "Home" },
@@ -17,14 +17,25 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-
-  useEffect(() => setOpen(false), [location.pathname]);
+  const navigate = useNavigate();
+  const { user, profile, signOut } = useAuth();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    setOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 12);
+    }
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  async function handleSignOut() {
+    await signOut();
+    navigate("/");
+  }
 
   return (
     <header
@@ -69,12 +80,26 @@ export default function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-2">
-          <Link to="/login" className="btn text-ink-700 hover:bg-ink-100">
-            Sign In
-          </Link>
-          <Link to="/signup" className="btn-primary">
-            Join the Club
-          </Link>
+          {user ? (
+            <>
+              <Link to="/dashboard" className="btn text-ink-700 hover:bg-ink-100">
+                <LayoutDashboard size={17} />
+                {profile?.full_name?.split(" ")[0] || "Dashboard"}
+              </Link>
+              <button onClick={handleSignOut} className="btn-outline">
+                <LogOut size={16} /> Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn text-ink-700 hover:bg-ink-100">
+                Sign In
+              </Link>
+              <Link to="/signup" className="btn-primary">
+                Join the Club
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -112,9 +137,18 @@ export default function Navbar() {
                   </NavLink>
                 </li>
               ))}
-              <li className="grid grid-cols-2 gap-2 pt-2 pb-1">
-                <Link to="/login" className="btn-outline">Sign In</Link>
-                <Link to="/signup" className="btn-primary">Join</Link>
+              <li className="pt-2 pb-1">
+                {user ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link to="/dashboard" className="btn-outline">Dashboard</Link>
+                    <button onClick={handleSignOut} className="btn bg-ink-100 text-ink-700">Sign Out</button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link to="/login" className="btn-outline">Sign In</Link>
+                    <Link to="/signup" className="btn-primary">Join</Link>
+                  </div>
+                )}
               </li>
             </ul>
           </motion.div>

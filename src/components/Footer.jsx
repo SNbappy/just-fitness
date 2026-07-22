@@ -1,6 +1,22 @@
 import { Link } from "react-router-dom";
-import { Dumbbell, Mail, Phone, MapPin, Facebook, Youtube } from "lucide-react";
+import { Dumbbell, Mail, Phone, MapPin } from "lucide-react";
 import { club } from "../data/club";
+
+function FacebookIcon({ size = 19 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.19 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.75 8.44-4.92 8.44-9.94z" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ size = 19 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23.5 6.9a3.02 3.02 0 0 0-2.12-2.14C19.5 4.25 12 4.25 12 4.25s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.9C0 8.79 0 12 0 12s0 3.21.5 5.1a3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14C24 15.21 24 12 24 12s0-3.21-.5-5.1zM9.6 15.6V8.4L15.8 12l-6.2 3.6z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -56,14 +72,14 @@ export default function Footer() {
               <a href={club.social.facebook} target="_blank" rel="noreferrer"
                  className="grid place-items-center w-11 h-11 rounded-xl bg-ink-800 hover:bg-primary-600 text-white transition-colors"
                  aria-label="Facebook">
-                <Facebook size={19} />
+                <FacebookIcon />
               </a>
             )}
             {club.social.youtube && (
               <a href={club.social.youtube} target="_blank" rel="noreferrer"
                  className="grid place-items-center w-11 h-11 rounded-xl bg-ink-800 hover:bg-secondary-600 text-white transition-colors"
                  aria-label="YouTube">
-                <Youtube size={19} />
+                <YoutubeIcon />
               </a>
             )}
           </div>

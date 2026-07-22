@@ -15,7 +15,7 @@ export const club = {
     email: "uzzalsutra10@gmail.com",
     pabx: "129",
     phone: "01738678526",
-    photo: "/images/director.jpg",
+    photo: "/images/director.png",
     message:
       "Physical fitness is the foundation on which academic success is built. A healthy body sharpens the mind, steadies the temperament and strengthens the discipline that university life demands. Through the Health and Fitness Club we want every JUST student — regardless of prior experience — to find a place to train safely, track their progress and build habits that last long after graduation. Join a batch, bring a friend, and start today.",
     messageTitle: "Message from the Director",
