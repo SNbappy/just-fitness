@@ -11,7 +11,14 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Batches from "./pages/Batches";
+import CreateBatch from "./pages/CreateBatch";
+import JoinBatch from "./pages/JoinBatch";
+import BatchDetail from "./pages/BatchDetail";
+import MemberProfile from "./pages/MemberProfile";
 import NotFound from "./pages/NotFound";
+
+const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
 
 export default function App() {
   return (
@@ -27,14 +34,14 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+
+            <Route path="/dashboard" element={guard(<Dashboard />)} />
+            <Route path="/batches" element={guard(<Batches />)} />
+            <Route path="/join-batch" element={guard(<JoinBatch />)} />
+            <Route path="/create-batch" element={guard(<CreateBatch />, ["trainer", "admin"])} />
+            <Route path="/batch/:id" element={guard(<BatchDetail />)} />
+            <Route path="/batch/:id/member/:userId" element={guard(<MemberProfile />)} />
+
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

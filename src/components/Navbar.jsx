@@ -82,6 +82,9 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-2">
           {user ? (
             <>
+              <Link to="/batches" className="btn text-ink-700 hover:bg-ink-100">
+                My Batches
+              </Link>
               <Link to="/dashboard" className="btn text-ink-700 hover:bg-ink-100">
                 <LayoutDashboard size={17} />
                 {profile?.full_name?.split(" ")[0] || "Dashboard"}
@@ -140,6 +143,7 @@ export default function Navbar() {
               <li className="pt-2 pb-1">
                 {user ? (
                   <div className="grid grid-cols-2 gap-2">
+                    <Link to="/batches" className="btn-outline">My Batches</Link>
                     <Link to="/dashboard" className="btn-outline">Dashboard</Link>
                     <button onClick={handleSignOut} className="btn bg-ink-100 text-ink-700">Sign Out</button>
                   </div>

@@ -59,6 +59,7 @@ export default function Dashboard() {
         medical_conditions: health.medical_conditions || null,
         emergency_contact_name: health.emergency_contact_name || null,
         emergency_contact_phone: health.emergency_contact_phone || null,
+        share_stats_with_batchmates: health.share_stats_with_batchmates,
         updated_at: new Date().toISOString(),
       })
       .eq("user_id", user.id);
@@ -191,6 +192,25 @@ export default function Dashboard() {
                 className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-ink-100">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={health?.share_stats_with_batchmates ?? true}
+                onChange={(e) => field("share_stats_with_batchmates", e.target.checked)}
+                className="mt-1 w-5 h-5 rounded accent-primary-600"
+              />
+              <span>
+                <span className="block text-sm font-semibold text-ink-800">
+                  Share my weight, height, BMI and pulse with batchmates
+                </span>
+                <span className="block text-xs text-ink-500 mt-0.5">
+                  Your trainer can always see these. Medical notes and emergency contact are never shown to batchmates.
+                </span>
+              </span>
+            </label>
           </div>
 
           <div className="mt-6 flex items-center gap-4">
