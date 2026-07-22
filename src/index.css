@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --bg: #F7F8FC;
+    --bg: #F5F8FC;
     --surface: #FFFFFF;
-    --elevated: #EEF1F7;
-    --line: #E4E8F0;
-    --body: #14172B;
-    --muted: #4A5273;
-    --faint: #949BB3;
+    --elevated: #E9EFF7;
+    --line: #E1E8F3;
+    --body: #131B29;
+    --muted: #45546F;
+    --faint: #8697B5;
   }
 
   html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
@@ -21,7 +21,7 @@
      so white-on-gradient and dark-on-white both work. */
   h1, h2, h3, h4 { @apply font-display font-bold tracking-tight; }
 
-  ::selection { background: #FF5A1F; color: #fff; }
+  ::selection { background: #2563EB; color: #fff; }
 }
 
 @layer components {
@@ -52,7 +52,7 @@
   }
 
   .brand-gradient {
-    background: linear-gradient(115deg, #FF5A1F 0%, #FF2D78 48%, #7C5CFF 100%);
+    background: linear-gradient(118deg, #06B6D4 0%, #3B82F6 46%, #6366F1 100%);
   }
 }
 
@@ -72,7 +72,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(115deg, #FF5A1F 0%, #FF2D78 55%, #7C5CFF 100%);
+    background: linear-gradient(118deg, #0891B2 0%, #2563EB 52%, #4F46E5 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -91,5 +91,33 @@
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #DEE2EC; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #C2C7D6; }
+::-webkit-scrollbar-thumb { background: #D5DFEE; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #B2C1DA; }
+
+@layer components {
+  .mega {
+    @apply font-mega uppercase leading-[0.82] tracking-[-0.02em];
+  }
+  .btn-electric {
+    @apply btn bg-electric-500 text-white hover:bg-electric-600;
+    box-shadow: 0 10px 34px -10px rgba(46, 107, 255, 0.7);
+  }
+  .btn-void {
+    @apply btn bg-void text-white hover:bg-carbon;
+  }
+  .rule { @apply border-t border-white/10; }
+}
+
+@layer utilities {
+  .outline-type {
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.55);
+  }
+  @media (min-width: 1024px) {
+    .outline-type { -webkit-text-stroke-width: 3px; }
+  }
+  .mask-fade-r {
+    -webkit-mask-image: linear-gradient(to right, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 82%, transparent 100%);
+  }
+}

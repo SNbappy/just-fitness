@@ -10,7 +10,7 @@ export default function PublicLayout() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const bleed = ["/", "/about", "/gallery", "/events", "/notices", "/contact"].includes(pathname);
+  const bleed = !["/login", "/signup"].includes(pathname);
 
   return (
     <div className="min-h-screen flex flex-col bg-bg">

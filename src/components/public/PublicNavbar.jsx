@@ -6,22 +6,22 @@ import { useAuth } from "../../lib/AuthContext";
 import MobileMenu from "./MobileMenu";
 
 const NAV = [
-  { label: "Home", to: "/" },
+  { label: "home", to: "/" },
   {
-    label: "Club",
+    label: "club",
     items: [
       { to: "/about", label: "About us", desc: "Mission, history and how to join", icon: Info },
       { to: "/notices", label: "Notices", desc: "Official announcements", icon: Bell },
     ],
   },
   {
-    label: "Activities",
+    label: "activities",
     items: [
       { to: "/gallery", label: "Gallery", desc: "Photos and videos from sessions", icon: Image },
       { to: "/events", label: "Events", desc: "Tournaments and upcoming programmes", icon: CalendarDays },
     ],
   },
-  { label: "Contact", to: "/contact" },
+  { label: "contact", to: "/contact" },
 ];
 
 export default function PublicNavbar() {
@@ -31,7 +31,7 @@ export default function PublicNavbar() {
   const { pathname } = useLocation();
   const { user } = useAuth();
 
-  const bleed = ["/", "/about", "/gallery", "/events", "/notices", "/contact"].includes(pathname);
+  const bleed = !["/login", "/signup"].includes(pathname);
   const transparent = bleed && !scrolled;
 
   useEffect(() => {
@@ -50,19 +50,19 @@ export default function PublicNavbar() {
     <>
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-smooth ${
-          transparent ? "bg-transparent" : "bg-surface/80 backdrop-blur-xl border-b border-line"
+          transparent ? "bg-transparent" : "bg-void/90 backdrop-blur-xl border-b border-white/10"
         }`}
       >
         <nav className="container-wide flex items-center justify-between h-[72px]">
           <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-            <span className={`grid place-items-center w-10 h-10 rounded-xl transition-transform group-hover:scale-105 ${transparent ? "bg-white text-primary-600" : "bg-primary-500 text-white shadow-glow"}`}>
+            <span className={`grid place-items-center w-10 h-10 rounded-xl transition-transform group-hover:scale-105 ${transparent ? "bg-white text-primary-600" : "bg-electric-500 text-white"}`}>
               <Dumbbell size={20} strokeWidth={2.5} />
             </span>
             <span className="leading-none">
-              <span className={`block font-display font-extrabold text-lg ${transparent ? "text-white" : "text-body"}`}>
+              <span className={`block font-display font-extrabold text-lg "text-white"`}>
                 JUST HFC
               </span>
-              <span className={`block text-[10px] font-medium mt-1 ${transparent ? "text-white/70" : "text-faint"}`}>
+              <span className={`block text-[10px] font-medium mt-1 "text-white/45"`}>
                 Health &amp; Fitness Club
               </span>
             </span>
@@ -73,8 +73,8 @@ export default function PublicNavbar() {
               item.items ? (
                 <li key={item.label} className="relative" onMouseEnter={() => setOpenMenu(item.label)}>
                   <button
-                    className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                      transparent ? "text-white hover:text-white/80" : "text-muted hover:text-body"
+                    className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold lowercase tracking-wide transition-colors ${
+                      transparent ? "text-white hover:text-white/80" : "text-white/60 hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -90,16 +90,16 @@ export default function PublicNavbar() {
                         transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute left-0 top-full pt-3 w-80"
                       >
-                        <div className="card p-2 shadow-lift">
+                        <div className="bg-carbon border border-white/10 p-2">
                           {item.items.map((sub) => (
                             <Link key={sub.to} to={sub.to}
-                              className="flex gap-3 p-3 rounded-xl hover:bg-elevated transition-colors group">
-                              <span className="grid place-items-center w-10 h-10 rounded-lg bg-primary-500/10 text-primary-500 shrink-0 group-hover:bg-primary-500 group-hover:text-white transition-colors">
+                              className="flex gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">
+                              <span className="grid place-items-center w-10 h-10 rounded-lg bg-electric-500/15 text-electric-400 shrink-0 group-hover:bg-electric-500 group-hover:text-white transition-colors">
                                 <sub.icon size={18} />
                               </span>
                               <span className="min-w-0">
-                                <span className="block text-sm font-bold text-body">{sub.label}</span>
-                                <span className="block text-xs text-muted mt-0.5">{sub.desc}</span>
+                                <span className="block text-sm font-bold text-white">{sub.label}</span>
+                                <span className="block text-xs text-white/45 mt-0.5">{sub.desc}</span>
                               </span>
                             </Link>
                           ))}
@@ -113,10 +113,10 @@ export default function PublicNavbar() {
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
-                      `relative px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                      `relative px-4 py-2 rounded-lg text-sm font-bold lowercase tracking-wide transition-colors ${
                         transparent
                           ? "text-white hover:text-white/80"
-                          : isActive ? "text-body" : "text-muted hover:text-body"
+                          : isActive ? "text-body" : "text-white/60 hover:text-white"
                       }`
                     }
                   >
@@ -137,16 +137,16 @@ export default function PublicNavbar() {
 
           <div className="hidden lg:flex items-center gap-2">
             {user ? (
-              <Link to="/dashboard" className={transparent ? "btn-white" : "btn-primary"}>
+              <Link to="/dashboard" className="btn-electric">
                 <LayoutDashboard size={17} /> Dashboard
               </Link>
             ) : (
               <>
                 <Link to="/login"
-                  className={`btn ${transparent ? "text-white/85 hover:bg-white/10" : "text-muted hover:text-body hover:bg-elevated"}`}>
+                  className={`btn ${transparent ? "text-white/85 hover:bg-white/10" : "text-muted hover:text-white hover:bg-white/10"}`}>
                   Sign in
                 </Link>
-                <Link to="/signup" className={transparent ? "btn-white" : "btn-primary"}>Join the club</Link>
+                <Link to="/signup" className="btn-electric">Join the club</Link>
               </>
             )}
           </div>
@@ -156,7 +156,7 @@ export default function PublicNavbar() {
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
               className={`grid place-items-center w-11 h-11 rounded-xl transition-colors ${
-                transparent ? "text-white hover:bg-white/10" : "text-body hover:bg-elevated"
+                transparent ? "text-white hover:bg-white/10" : "text-white hover:bg-white/10"
               }`}
             >
               <Menu size={24} />
