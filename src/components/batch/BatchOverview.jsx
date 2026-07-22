@@ -34,10 +34,10 @@ export default function BatchOverview({ batch, roster, isTrainer }) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-3 gap-4">
-        <Card icon={Users} label="Members" value={roster.length} color="bg-primary-50 text-primary-600" />
+        <Card icon={Users} label="Members" value={roster.length} color="bg-primary-500/10 text-primary-600" />
         <Card icon={CalendarCheck} label="Sessions Held" value={stats.sessions} color="bg-blue-50 text-blue-600" />
         <Card icon={Percent} label={isTrainer ? "Batch Attendance" : "Batch Average"}
-          value={stats.rate === null ? "—" : `${stats.rate}%`} color="bg-secondary-50 text-secondary-600" />
+          value={stats.rate === null ? "—" : `${stats.rate}%`} color="bg-secondary-500/10 text-secondary-600" />
       </div>
 
       {latestPost && (
@@ -45,15 +45,15 @@ export default function BatchOverview({ batch, roster, isTrainer }) {
           <p className="text-xs font-bold uppercase tracking-wider text-secondary-600 flex items-center gap-1.5">
             <Megaphone size={14} /> Latest Announcement
           </p>
-          <p className="mt-2 text-ink-700 whitespace-pre-wrap line-clamp-4">{latestPost.content}</p>
-          <p className="mt-2 text-xs text-ink-400">
+          <p className="mt-2 text-body whitespace-pre-wrap line-clamp-4">{latestPost.content}</p>
+          <p className="mt-2 text-xs text-faint">
             {new Date(latestPost.created_at).toLocaleDateString([], { day: "numeric", month: "short" })}
           </p>
         </div>
       )}
 
       <div className="card p-6">
-        <p className="text-xs font-bold uppercase tracking-wider text-ink-400 flex items-center gap-1.5">
+        <p className="text-xs font-bold uppercase tracking-wider text-faint flex items-center gap-1.5">
           <Info size={14} /> Batch Details
         </p>
         <dl className="mt-4 grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
@@ -68,7 +68,7 @@ export default function BatchOverview({ batch, roster, isTrainer }) {
           <Row label="Status" value={batch.is_active ? "Active" : "Closed"} />
         </dl>
         {batch.description && (
-          <p className="mt-5 pt-5 border-t border-ink-100 text-ink-600 leading-relaxed whitespace-pre-wrap">
+          <p className="mt-5 pt-5 border-t border-line text-muted leading-relaxed whitespace-pre-wrap">
             {batch.description}
           </p>
         )}
@@ -83,8 +83,8 @@ function Card({ icon: Icon, label, value, color }) {
       <span className={`grid place-items-center w-10 h-10 rounded-xl ${color}`}>
         <Icon size={18} />
       </span>
-      <p className="mt-3 text-xl font-extrabold text-ink-900">{value}</p>
-      <p className="text-[11px] text-ink-500 font-semibold">{label}</p>
+      <p className="mt-3 text-xl font-extrabold text-body">{value}</p>
+      <p className="text-[11px] text-muted font-semibold">{label}</p>
     </div>
   );
 }
@@ -92,8 +92,8 @@ function Card({ icon: Icon, label, value, color }) {
 function Row({ label, value }) {
   return (
     <div>
-      <dt className="text-xs font-semibold text-ink-400">{label}</dt>
-      <dd className="mt-0.5 text-ink-800 font-medium">{value || "—"}</dd>
+      <dt className="text-xs font-semibold text-faint">{label}</dt>
+      <dd className="mt-0.5 text-body font-medium">{value || "—"}</dd>
     </div>
   );
 }

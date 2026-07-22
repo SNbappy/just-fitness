@@ -38,7 +38,7 @@ export default function Countdown() {
             strokeDashoffset={2 * Math.PI * 96 * (1 - pct / 100)}
             style={{ transition: "stroke-dashoffset 1s linear" }} />
         </svg>
-        <p className="absolute font-mono text-4xl font-extrabold text-ink-900 tabular-nums">
+        <p className="absolute font-mono text-4xl font-extrabold text-body tabular-nums">
           {mm}:{ss}
         </p>
       </div>
@@ -46,12 +46,12 @@ export default function Countdown() {
       <div className="mt-6 flex justify-center gap-3">
         <button onClick={() => { if (left === 0) setLeft(total); setRunning((r) => !r); }}
           className={`grid place-items-center w-16 h-16 rounded-2xl text-white active:scale-95 transition-transform ${
-            running ? "bg-secondary-500" : "bg-primary-500"
+            running ? "bg-secondary-500/100" : "bg-primary-500/100"
           }`}>
           {running ? <Pause size={26} /> : <Play size={26} className="ml-0.5" />}
         </button>
         <button onClick={() => { setRunning(false); setLeft(total); }}
-          className="grid place-items-center w-16 h-16 rounded-2xl bg-ink-100 text-ink-700 active:scale-95 transition-transform">
+          className="grid place-items-center w-16 h-16 rounded-2xl bg-elevated text-body active:scale-95 transition-transform">
           <RotateCcw size={22} />
         </button>
       </div>
@@ -60,7 +60,7 @@ export default function Countdown() {
         {QUICK.map((s) => (
           <button key={s} onClick={() => pick(s)}
             className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
-              total === s ? "bg-primary-500 text-white" : "bg-ink-100 text-ink-600 hover:bg-ink-200"
+              total === s ? "bg-primary-500/100 text-white" : "bg-elevated text-muted hover:bg-elevated"
             }`}>
             {s < 60 ? `${s}s` : `${s / 60}m`}
           </button>

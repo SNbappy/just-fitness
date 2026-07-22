@@ -76,8 +76,8 @@ export default function BatchDetail() {
   if (error) {
     return (
       <div className="section container-app text-center">
-        <AlertCircle className="mx-auto text-ink-300" size={40} />
-        <p className="mt-3 font-semibold text-ink-600">{error}</p>
+        <AlertCircle className="mx-auto text-faint" size={40} />
+        <p className="mt-3 font-semibold text-muted">{error}</p>
         <Link to="/batches" className="btn-primary mt-5">Back to My Batches</Link>
       </div>
     );
@@ -108,12 +108,12 @@ export default function BatchDetail() {
             <div className="flex gap-2 shrink-0">
               {isTrainer && (
                 <button onClick={() => setShareOpen(true)}
-                  className="btn bg-white text-ink-900 hover:bg-white/90 font-bold">
+                  className="btn bg-surface text-body hover:bg-surface/90 font-bold">
                   <QrCode size={17} /> Share Code
                 </button>
               )}
               {myMembership && !isTrainer && (
-                <button onClick={leaveBatch} className="btn bg-white/15 text-white border border-white/25 hover:bg-white/25">
+                <button onClick={leaveBatch} className="btn bg-surface/15 text-white border border-white/25 hover:bg-surface/25">
                   <LogOut size={16} /> Leave
                 </button>
               )}
@@ -123,12 +123,12 @@ export default function BatchDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="sticky top-16 sm:top-18 z-30 bg-white/95 backdrop-blur border-b border-ink-100">
+      <div className="sticky top-16 sm:top-18 z-30 bg-surface/95 backdrop-blur border-b border-line">
         <div className="container-app flex gap-1 overflow-x-auto scrollbar-hide">
           {TABS.map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={`relative flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap transition-colors ${
-                tab === t.key ? "text-primary-600" : "text-ink-500 hover:text-ink-800"
+                tab === t.key ? "text-primary-600" : "text-muted hover:text-body"
               }`}>
               <t.icon size={16} /> {t.label}
               {tab === t.key && (

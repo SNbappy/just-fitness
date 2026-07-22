@@ -42,7 +42,7 @@ export default function Batches() {
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Training</p>
-            <h1 className="mt-2 text-3xl font-extrabold text-ink-900">My Batches</h1>
+            <h1 className="mt-2 text-3xl font-extrabold text-body">My Batches</h1>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link to="/join-batch" className="btn-outline">
@@ -58,14 +58,14 @@ export default function Batches() {
 
         {canTrain && (
           <div className="mt-10">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">
               Batches I Train ({trainingBatches.length})
             </h2>
             {trainingBatches.length === 0 ? (
               <div className="mt-4 card p-10 text-center">
-                <Users className="mx-auto text-ink-300" size={36} />
-                <p className="mt-3 font-semibold text-ink-600">No batches yet</p>
-                <p className="text-sm text-ink-400 mt-1">Create your first training batch to get a join code.</p>
+                <Users className="mx-auto text-faint" size={36} />
+                <p className="mt-3 font-semibold text-muted">No batches yet</p>
+                <p className="text-sm text-faint mt-1">Create your first training batch to get a join code.</p>
                 <Link to="/create-batch" className="btn-primary mt-5">
                   <Plus size={18} /> Create Batch
                 </Link>
@@ -79,14 +79,14 @@ export default function Batches() {
         )}
 
         <div className="mt-12">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-faint">
             Batches I've Joined ({myBatches.length})
           </h2>
           {myBatches.length === 0 ? (
             <div className="mt-4 card p-10 text-center">
-              <KeyRound className="mx-auto text-ink-300" size={36} />
-              <p className="mt-3 font-semibold text-ink-600">You haven't joined a batch yet</p>
-              <p className="text-sm text-ink-400 mt-1">Ask your trainer for the 6-character join code.</p>
+              <KeyRound className="mx-auto text-faint" size={36} />
+              <p className="mt-3 font-semibold text-muted">You haven't joined a batch yet</p>
+              <p className="text-sm text-faint mt-1">Ask your trainer for the 6-character join code.</p>
               <Link to="/join-batch" className="btn-primary mt-5">
                 <KeyRound size={17} /> Join a Batch
               </Link>

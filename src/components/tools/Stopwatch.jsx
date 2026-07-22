@@ -38,23 +38,23 @@ export default function Stopwatch() {
 
   return (
     <div className="text-center">
-      <p className="font-mono text-5xl sm:text-6xl font-extrabold text-ink-900 tabular-nums">
+      <p className="font-mono text-5xl sm:text-6xl font-extrabold text-body tabular-nums">
         {format(elapsed)}
       </p>
 
       <div className="mt-8 flex justify-center gap-3">
         <button onClick={() => setRunning((r) => !r)}
           className={`grid place-items-center w-16 h-16 rounded-2xl text-white transition-transform active:scale-95 ${
-            running ? "bg-secondary-500" : "bg-primary-500"
+            running ? "bg-secondary-500/100" : "bg-primary-500/100"
           }`}>
           {running ? <Pause size={26} /> : <Play size={26} className="ml-0.5" />}
         </button>
         <button onClick={lap} disabled={!running}
-          className="grid place-items-center w-16 h-16 rounded-2xl bg-ink-100 text-ink-700 disabled:opacity-40 active:scale-95 transition-transform">
+          className="grid place-items-center w-16 h-16 rounded-2xl bg-elevated text-body disabled:opacity-40 active:scale-95 transition-transform">
           <Flag size={22} />
         </button>
         <button onClick={reset}
-          className="grid place-items-center w-16 h-16 rounded-2xl bg-ink-100 text-ink-700 active:scale-95 transition-transform">
+          className="grid place-items-center w-16 h-16 rounded-2xl bg-elevated text-body active:scale-95 transition-transform">
           <RotateCcw size={22} />
         </button>
       </div>
@@ -62,10 +62,10 @@ export default function Stopwatch() {
       {laps.length > 0 && (
         <div className="mt-8 text-left max-h-64 overflow-y-auto">
           {laps.map((l) => (
-            <div key={l.n} className="flex justify-between py-2.5 border-b border-ink-100 text-sm">
-              <span className="font-semibold text-ink-500">Lap {l.n}</span>
-              <span className="font-mono text-ink-400">+{format(l.split)}</span>
-              <span className="font-mono font-bold text-ink-900">{format(l.time)}</span>
+            <div key={l.n} className="flex justify-between py-2.5 border-b border-line text-sm">
+              <span className="font-semibold text-muted">Lap {l.n}</span>
+              <span className="font-mono text-faint">+{format(l.split)}</span>
+              <span className="font-mono font-bold text-body">{format(l.time)}</span>
             </div>
           ))}
         </div>

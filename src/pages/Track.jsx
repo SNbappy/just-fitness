@@ -56,7 +56,7 @@ export default function Track() {
 
   if (loading) return <Spinner full />;
 
-  const input = "mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
+  const input = "mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
 
   return (
     <section className="section">
@@ -65,11 +65,11 @@ export default function Track() {
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Daily Check-in</p>
-            <h1 className="mt-2 text-3xl font-extrabold text-ink-900">How was today?</h1>
-            <p className="mt-1 text-ink-500 text-sm">Takes 30 seconds. Fill in what you know, skip the rest.</p>
+            <h1 className="mt-2 text-3xl font-extrabold text-body">How was today?</h1>
+            <p className="mt-1 text-muted text-sm">Takes 30 seconds. Fill in what you know, skip the rest.</p>
           </div>
           {streak > 0 && (
-            <div className="flex items-center gap-2 bg-secondary-50 text-secondary-700 px-4 py-2.5 rounded-xl shrink-0">
+            <div className="flex items-center gap-2 bg-secondary-500/10 text-secondary-700 px-4 py-2.5 rounded-xl shrink-0">
               <Flame size={20} />
               <span className="font-extrabold">{streak}</span>
               <span className="text-xs font-semibold">day streak</span>
@@ -79,17 +79,17 @@ export default function Track() {
 
         <form onSubmit={handleSave} className="mt-7 space-y-5">
           <div className="card p-5">
-            <label className="text-xs font-bold uppercase tracking-wider text-ink-400">Date</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-faint">Date</label>
             <div className="mt-1.5 relative">
-              <CalendarDays size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
+              <CalendarDays size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
               <input type="date" value={date} max={todayISO()}
                 onChange={(e) => setDate(e.target.value)}
-                className="rounded-xl border border-ink-200 pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                className="rounded-xl border border-line pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
           </div>
 
           <div className="card p-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">Body</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">Body</h2>
             <div className="mt-4 grid sm:grid-cols-2 gap-5">
               <Field icon={Weight} label="Weight (kg)">
                 <input type="number" step="0.1" value={form.weight_kg ?? ""}
@@ -103,7 +103,7 @@ export default function Track() {
           </div>
 
           <div className="card p-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">Habits</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">Habits</h2>
             <div className="mt-4 grid sm:grid-cols-2 gap-5">
               <Field icon={Moon} label="Sleep (hours)">
                 <input type="number" step="0.5" value={form.sleep_hours ?? ""}
@@ -116,7 +116,7 @@ export default function Track() {
             </div>
 
             <div className="mt-5">
-              <p className="text-sm font-semibold text-ink-700 flex items-center gap-2">
+              <p className="text-sm font-semibold text-body flex items-center gap-2">
                 <Droplets size={16} className="text-blue-500" /> Water (glasses)
               </p>
               <div className="mt-2.5 flex flex-wrap gap-2">
@@ -125,7 +125,7 @@ export default function Track() {
                     onClick={() => set("water_glasses", form.water_glasses === n ? null : n)}
                     className={`w-9 h-9 rounded-lg text-sm font-bold transition-all ${
                       (form.water_glasses ?? 0) >= n
-                        ? "bg-blue-500 text-white scale-105" : "bg-ink-100 text-ink-400 hover:bg-ink-200"
+                        ? "bg-blue-500 text-white scale-105" : "bg-elevated text-faint hover:bg-elevated"
                     }`}>
                     {n}
                   </button>
@@ -135,10 +135,10 @@ export default function Track() {
           </div>
 
           <div className="card p-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">How you felt</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">How you felt</h2>
 
             <div className="mt-4">
-              <p className="text-sm font-semibold text-ink-700 flex items-center gap-2">
+              <p className="text-sm font-semibold text-body flex items-center gap-2">
                 <Smile size={16} className="text-amber-500" /> Mood
               </p>
               <div className="mt-2.5 flex gap-2">
@@ -146,7 +146,7 @@ export default function Track() {
                   <button key={i} type="button"
                     onClick={() => set("mood", form.mood === i + 1 ? null : i + 1)}
                     className={`w-12 h-12 rounded-xl text-2xl transition-all ${
-                      form.mood === i + 1 ? "bg-amber-100 scale-110 ring-2 ring-amber-400" : "bg-ink-50 hover:bg-ink-100"
+                      form.mood === i + 1 ? "bg-amber-100 scale-110 ring-2 ring-amber-400" : "bg-elevated hover:bg-elevated"
                     }`}>
                     {emoji}
                   </button>
@@ -155,7 +155,7 @@ export default function Track() {
             </div>
 
             <div className="mt-5">
-              <p className="text-sm font-semibold text-ink-700 flex items-center gap-2">
+              <p className="text-sm font-semibold text-body flex items-center gap-2">
                 <Zap size={16} className="text-violet-500" /> Energy
               </p>
               <div className="mt-2.5 flex gap-2">
@@ -163,7 +163,7 @@ export default function Track() {
                   <button key={n} type="button"
                     onClick={() => set("energy", form.energy === n ? null : n)}
                     className={`w-12 h-12 rounded-xl font-bold transition-all ${
-                      form.energy === n ? "bg-violet-500 text-white scale-110" : "bg-ink-50 text-ink-400 hover:bg-ink-100"
+                      form.energy === n ? "bg-violet-500 text-white scale-110" : "bg-elevated text-faint hover:bg-elevated"
                     }`}>
                     {n}
                   </button>
@@ -174,11 +174,11 @@ export default function Track() {
             <button type="button" onClick={() => set("workout_done", !form.workout_done)}
               className={`mt-6 w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${
                 form.workout_done
-                  ? "border-primary-500 bg-primary-50 text-primary-700"
-                  : "border-ink-200 text-ink-500 hover:border-ink-300"
+                  ? "border-primary-500 bg-primary-500/10 text-primary-700"
+                  : "border-line text-muted hover:border-line"
               }`}>
               <span className={`grid place-items-center w-10 h-10 rounded-xl ${
-                form.workout_done ? "bg-primary-500 text-white" : "bg-ink-100"
+                form.workout_done ? "bg-primary-500/100 text-white" : "bg-elevated"
               }`}>
                 <Dumbbell size={19} />
               </span>
@@ -189,7 +189,7 @@ export default function Track() {
             </button>
 
             <div className="mt-5">
-              <label className="text-sm font-semibold text-ink-700">Notes</label>
+              <label className="text-sm font-semibold text-body">Notes</label>
               <textarea rows={2} value={form.notes ?? ""} onChange={(e) => set("notes", e.target.value)}
                 placeholder="Anything worth remembering about today…" className={input} />
             </div>
@@ -214,8 +214,8 @@ export default function Track() {
 function Field({ icon: Icon, label, children }) {
   return (
     <div>
-      <label className="text-sm font-semibold text-ink-700 flex items-center gap-2">
-        <Icon size={16} className="text-ink-400" /> {label}
+      <label className="text-sm font-semibold text-body flex items-center gap-2">
+        <Icon size={16} className="text-faint" /> {label}
       </label>
       {children}
     </div>

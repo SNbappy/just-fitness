@@ -41,11 +41,11 @@ export default function JoinBatch() {
     <section className="section">
       <div className="container-app max-w-md">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-          <span className="inline-grid place-items-center w-16 h-16 rounded-2xl bg-primary-50 text-primary-600">
+          <span className="inline-grid place-items-center w-16 h-16 rounded-2xl bg-primary-500/10 text-primary-600">
             <KeyRound size={30} />
           </span>
-          <h1 className="mt-5 text-3xl font-extrabold text-ink-900">Join a Batch</h1>
-          <p className="mt-2 text-ink-500">Enter the 6-character code your trainer gave you.</p>
+          <h1 className="mt-5 text-3xl font-extrabold text-body">Join a Batch</h1>
+          <p className="mt-2 text-muted">Enter the 6-character code your trainer gave you.</p>
         </motion.div>
 
         {error && (
@@ -55,7 +55,7 @@ export default function JoinBatch() {
           </div>
         )}
         {success && (
-          <div className="mt-6 flex gap-2 items-center bg-primary-50 text-primary-700 text-sm rounded-xl px-4 py-3">
+          <div className="mt-6 flex gap-2 items-center bg-primary-500/10 text-primary-700 text-sm rounded-xl px-4 py-3">
             <CheckCircle2 size={18} /> <span>{success}</span>
           </div>
         )}
@@ -68,7 +68,7 @@ export default function JoinBatch() {
             maxLength={6}
             placeholder="ABC123"
             autoCapitalize="characters"
-            className="w-full text-center text-3xl font-extrabold tracking-[0.35em] uppercase rounded-xl border-2 border-ink-200 px-4 py-5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full text-center text-3xl font-extrabold tracking-[0.35em] uppercase rounded-xl border-2 border-line px-4 py-5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
           <button type="submit" disabled={loading || code.length < 6} className="btn-primary w-full mt-5">
             {loading ? "Joining…" : "Join Batch"}

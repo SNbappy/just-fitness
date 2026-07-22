@@ -59,11 +59,11 @@ export default function IntervalTimer() {
   }
 
   const colors = {
-    idle: "bg-ink-100 text-ink-500",
+    idle: "bg-elevated text-muted",
     prep: "bg-amber-500 text-white",
-    work: "bg-primary-500 text-white",
+    work: "bg-primary-500/100 text-white",
     rest: "bg-blue-500 text-white",
-    done: "bg-secondary-500 text-white",
+    done: "bg-secondary-500/100 text-white",
   };
 
   const total = phase === "work" ? cfg.work : phase === "rest" ? cfg.rest : cfg.prep;
@@ -82,22 +82,22 @@ export default function IntervalTimer() {
           Round {Math.min(round, cfg.rounds)} of {cfg.rounds}
         </p>
         <div className="mt-5 h-1.5 rounded-full bg-black/15 overflow-hidden">
-          <div className="h-full bg-white/80 transition-all duration-1000 ease-linear" style={{ width: `${pct}%` }} />
+          <div className="h-full bg-surface/80 transition-all duration-1000 ease-linear" style={{ width: `${pct}%` }} />
         </div>
       </div>
 
       <div className="mt-6 flex justify-center gap-3">
         <button onClick={() => (running ? setRunning(false) : start())}
           className={`grid place-items-center w-16 h-16 rounded-2xl text-white active:scale-95 transition-transform ${
-            running ? "bg-secondary-500" : "bg-primary-500"
+            running ? "bg-secondary-500/100" : "bg-primary-500/100"
           }`}>
           {running ? <Pause size={26} /> : <Play size={26} className="ml-0.5" />}
         </button>
-        <button onClick={reset} className="grid place-items-center w-16 h-16 rounded-2xl bg-ink-100 text-ink-700 active:scale-95 transition-transform">
+        <button onClick={reset} className="grid place-items-center w-16 h-16 rounded-2xl bg-elevated text-body active:scale-95 transition-transform">
           <RotateCcw size={22} />
         </button>
         <button onClick={() => setShowSettings((s) => !s)}
-          className="grid place-items-center w-16 h-16 rounded-2xl bg-ink-100 text-ink-700 active:scale-95 transition-transform">
+          className="grid place-items-center w-16 h-16 rounded-2xl bg-elevated text-body active:scale-95 transition-transform">
           <Settings2 size={22} />
         </button>
       </div>
@@ -106,7 +106,7 @@ export default function IntervalTimer() {
         {PRESETS.map((p) => (
           <button key={p.name} onClick={() => { setCfg(p); reset(); }}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-colors ${
-              cfg.name === p.name ? "bg-primary-500 text-white" : "bg-ink-100 text-ink-600 hover:bg-ink-200"
+              cfg.name === p.name ? "bg-primary-500/100 text-white" : "bg-elevated text-muted hover:bg-elevated"
             }`}>
             {p.name}
           </button>
@@ -120,10 +120,10 @@ export default function IntervalTimer() {
             ["rest", "Rest (s)"], ["rounds", "Rounds"],
           ].map(([key, label]) => (
             <div key={key}>
-              <label className="text-xs font-bold uppercase tracking-wider text-ink-400">{label}</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-faint">{label}</label>
               <input type="number" min="0" value={cfg[key]}
                 onChange={(e) => { setCfg((c) => ({ ...c, name: "Custom", [key]: Number(e.target.value) })); reset(); }}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                className="mt-1.5 w-full rounded-xl border border-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
           ))}
         </div>

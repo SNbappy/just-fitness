@@ -36,13 +36,13 @@ export default function Tools() {
       <div className="container-app">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
           <p className="eyebrow">Everything in one place</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-ink-900">Fitness Tools</h1>
-          <p className="mt-2 text-ink-500">Timers and calculators — no other app needed.</p>
+          <h1 className="mt-2 text-3xl font-extrabold text-body">Fitness Tools</h1>
+          <p className="mt-2 text-muted">Timers and calculators — no other app needed.</p>
         </motion.div>
 
         {groups.map((g) => (
           <div key={g} className="mt-10">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-ink-400">{g}</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">{g}</h2>
             <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {TOOLS.filter((t) => t.group === g).map((t, i) => (
                 <motion.button
@@ -59,10 +59,10 @@ export default function Tools() {
                       <t.icon size={22} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="font-bold text-ink-900">{t.name}</p>
-                      <p className="text-xs text-ink-500 mt-0.5">{t.desc}</p>
+                      <p className="font-bold text-body">{t.name}</p>
+                      <p className="text-xs text-muted mt-0.5">{t.desc}</p>
                     </div>
-                    <ChevronRight size={17} className="text-ink-300 group-hover:text-primary-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+                    <ChevronRight size={17} className="text-faint group-hover:text-primary-600 group-hover:translate-x-0.5 transition-all shrink-0" />
                   </div>
                 </motion.button>
               ))}
@@ -83,17 +83,17 @@ export default function Tools() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl w-full max-w-lg my-8"
+              className="bg-surface rounded-2xl w-full max-w-lg my-8"
             >
-              <div className="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-line">
                 <div className="flex items-center gap-3">
                   <span className={`grid place-items-center w-10 h-10 rounded-xl bg-gradient-to-br ${tool.color} text-white`}>
                     <tool.icon size={19} />
                   </span>
-                  <h3 className="font-extrabold text-ink-900">{tool.name}</h3>
+                  <h3 className="font-extrabold text-body">{tool.name}</h3>
                 </div>
                 <button onClick={() => setActive(null)}
-                  className="grid place-items-center w-9 h-9 rounded-lg hover:bg-ink-100 text-ink-500">
+                  className="grid place-items-center w-9 h-9 rounded-lg hover:bg-elevated text-muted">
                   <X size={19} />
                 </button>
               </div>

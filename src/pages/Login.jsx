@@ -36,8 +36,8 @@ export default function Login() {
           transition={{ duration: 0.4 }}
           className="w-full max-w-sm"
         >
-          <h1 className="text-2xl font-extrabold text-ink-900">Welcome back</h1>
-          <p className="mt-1 text-sm text-ink-500">Sign in to your JUST HFC account.</p>
+          <h1 className="text-2xl font-extrabold text-body">Welcome back</h1>
+          <p className="mt-1 text-sm text-muted">Sign in to your JUST HFC account.</p>
 
           {error && (
             <div className="mt-5 flex gap-2 items-start bg-red-50 text-red-700 text-sm rounded-xl px-4 py-3">
@@ -48,36 +48,36 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
-              <label className="text-sm font-semibold text-ink-700">Email</label>
+              <label className="text-sm font-semibold text-body">Email</label>
               <div className="mt-1.5 relative">
-                <Mail size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
+                <Mail size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
                 <input
                   required
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-ink-200 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full rounded-xl border border-line bg-surface pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-sm font-semibold text-ink-700">Password</label>
+              <label className="text-sm font-semibold text-body">Password</label>
               <div className="mt-1.5 relative">
-                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
+                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
                 <input
                   required
                   type={showPw ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Your password"
-                  className="w-full rounded-xl border border-ink-200 bg-white pl-11 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full rounded-xl border border-line bg-surface pl-11 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-400"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-faint"
                 >
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -89,7 +89,7 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-ink-500">
+          <p className="mt-6 text-center text-sm text-muted">
             Don't have an account?{" "}
             <Link to="/signup" className="text-primary-600 font-semibold hover:underline">
               Create one
@@ -99,8 +99,8 @@ export default function Login() {
       </div>
 
       <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white p-14 relative overflow-hidden order-1 lg:order-2">
-        <div className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full bg-secondary-500/25 blur-3xl animate-float-slow" />
-        <span className="grid place-items-center w-14 h-14 rounded-2xl bg-white/15 backdrop-blur border border-white/25 mb-8">
+        <div className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full bg-secondary-500/100/25 blur-3xl animate-float-slow" />
+        <span className="grid place-items-center w-14 h-14 rounded-2xl bg-surface/15 backdrop-blur border border-white/25 mb-8">
           <Dumbbell size={26} />
         </span>
         <h2 className="text-3xl font-extrabold leading-tight">

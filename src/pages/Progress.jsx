@@ -52,14 +52,14 @@ export default function Progress() {
       <div className="container-app">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
           <p className="eyebrow">Your Progress</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-ink-900">Progress</h1>
+          <h1 className="mt-2 text-3xl font-extrabold text-body">Progress</h1>
         </motion.div>
 
         <div className="mt-6 flex gap-2 overflow-x-auto scrollbar-hide">
           {RANGES.map((r) => (
             <button key={r.label} onClick={() => setRange(r.days)}
               className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${
-                range === r.days ? "bg-primary-500 text-white" : "bg-white text-ink-600 border border-ink-200 hover:bg-ink-50"
+                range === r.days ? "bg-primary-500/100 text-white" : "bg-surface text-muted border border-line hover:bg-elevated"
               }`}>
               {r.label}
             </button>
@@ -68,9 +68,9 @@ export default function Progress() {
 
         {logs.length === 0 ? (
           <div className="mt-8 card p-12 text-center">
-            <TrendingUp className="mx-auto text-ink-300" size={38} />
-            <p className="mt-3 font-semibold text-ink-600">No data yet</p>
-            <p className="text-sm text-ink-400 mt-1">
+            <TrendingUp className="mx-auto text-faint" size={38} />
+            <p className="mt-3 font-semibold text-muted">No data yet</p>
+            <p className="text-sm text-faint mt-1">
               Save a few daily check-ins and your charts will appear here.
             </p>
           </div>
@@ -80,9 +80,9 @@ export default function Progress() {
               <Stat icon={TrendingUp} label="Weight Change"
                 value={change === null ? "—" : `${change > 0 ? "+" : ""}${change} kg`}
                 color="bg-blue-50 text-blue-600" />
-              <Stat icon={Dumbbell} label="Workouts" value={workouts} color="bg-primary-50 text-primary-600" />
+              <Stat icon={Dumbbell} label="Workouts" value={workouts} color="bg-primary-500/10 text-primary-600" />
               <Stat icon={Moon} label="Avg Sleep" value={avgSleep ? `${avgSleep} h` : "—"} color="bg-violet-50 text-violet-600" />
-              <Stat icon={Flame} label="Log Streak" value={streak} color="bg-secondary-50 text-secondary-600" />
+              <Stat icon={Flame} label="Log Streak" value={streak} color="bg-secondary-500/10 text-secondary-600" />
             </div>
 
             <div className="mt-6 space-y-5">
@@ -152,8 +152,8 @@ function Stat({ icon: Icon, label, value, color }) {
       <span className={`grid place-items-center w-10 h-10 rounded-xl ${color}`}>
         <Icon size={18} />
       </span>
-      <p className="mt-3 text-xl font-extrabold text-ink-900">{value}</p>
-      <p className="text-[11px] text-ink-500 font-semibold">{label}</p>
+      <p className="mt-3 text-xl font-extrabold text-body">{value}</p>
+      <p className="text-[11px] text-muted font-semibold">{label}</p>
     </div>
   );
 }
@@ -161,9 +161,9 @@ function Stat({ icon: Icon, label, value, color }) {
 function ChartCard({ title, unit, icon: Icon, children }) {
   return (
     <div className="card p-5 sm:p-6">
-      <p className="text-sm font-bold text-ink-800 flex items-center gap-2">
-        <Icon size={16} className="text-ink-400" /> {title}
-        <span className="text-xs font-normal text-ink-400">({unit})</span>
+      <p className="text-sm font-bold text-body flex items-center gap-2">
+        <Icon size={16} className="text-faint" /> {title}
+        <span className="text-xs font-normal text-faint">({unit})</span>
       </p>
       <div className="mt-4 h-56">
         <ResponsiveContainer width="100%" height="100%">

@@ -85,10 +85,10 @@ export default function Dashboard() {
       <div className="container-app">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <p className="eyebrow">Dashboard</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-ink-900">
+          <h1 className="mt-2 text-3xl font-extrabold text-body">
             Welcome, {profile?.full_name?.split(" ")[0] || "there"} 👋
           </h1>
-          <p className="mt-1 text-ink-500 capitalize">Role: {profile?.role}</p>
+          <p className="mt-1 text-muted capitalize">Role: {profile?.role}</p>
         </motion.div>
 
         {/* Quick stat cards */}
@@ -96,69 +96,69 @@ export default function Dashboard() {
           {[
             { icon: Weight, label: "Current Weight", value: health?.current_weight_kg ? `${health.current_weight_kg} kg` : "—", color: "bg-blue-50 text-blue-600" },
             { icon: Ruler, label: "Height", value: health?.height_cm ? `${health.height_cm} cm` : "—", color: "bg-violet-50 text-violet-600" },
-            { icon: Activity, label: "BMI", value: bmi ?? "—", color: "bg-primary-50 text-primary-600" },
+            { icon: Activity, label: "BMI", value: bmi ?? "—", color: "bg-primary-500/10 text-primary-600" },
             { icon: HeartPulse, label: "Morning Pulse", value: health?.current_pulse ? `${health.current_pulse} bpm` : "—", color: "bg-rose-50 text-rose-600" },
           ].map((s) => (
             <div key={s.label} className="card p-5">
               <span className={`grid place-items-center w-11 h-11 rounded-xl ${s.color}`}>
                 <s.icon size={20} />
               </span>
-              <p className="mt-3 text-xl font-extrabold text-ink-900">{s.value}</p>
-              <p className="text-xs text-ink-500 font-semibold">{s.label}</p>
+              <p className="mt-3 text-xl font-extrabold text-body">{s.value}</p>
+              <p className="text-xs text-muted font-semibold">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Health profile form */}
         <form onSubmit={handleSave} className="mt-8 card p-6 sm:p-8">
-          <h2 className="text-lg font-extrabold text-ink-900">Health Profile</h2>
-          <p className="text-sm text-ink-500 mt-1">
+          <h2 className="text-lg font-extrabold text-body">Health Profile</h2>
+          <p className="text-sm text-muted mt-1">
             This information is private. Only you, and the trainer of a batch you join, can see it.
           </p>
 
           <div className="mt-6 grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="text-sm font-semibold text-ink-700">Weight at Joining (kg)</label>
+              <label className="text-sm font-semibold text-body">Weight at Joining (kg)</label>
               <input
                 type="number" step="0.1"
                 value={health?.joining_weight_kg ?? ""}
                 onChange={(e) => field("joining_weight_kg", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Current Weight (kg)</label>
+              <label className="text-sm font-semibold text-body">Current Weight (kg)</label>
               <input
                 type="number" step="0.1"
                 value={health?.current_weight_kg ?? ""}
                 onChange={(e) => field("current_weight_kg", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Height (cm)</label>
+              <label className="text-sm font-semibold text-body">Height (cm)</label>
               <input
                 type="number" step="0.1"
                 value={health?.height_cm ?? ""}
                 onChange={(e) => field("height_cm", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Morning Pulse (bpm)</label>
+              <label className="text-sm font-semibold text-body">Morning Pulse (bpm)</label>
               <input
                 type="number"
                 value={health?.current_pulse ?? ""}
                 onChange={(e) => field("current_pulse", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm font-semibold text-ink-700">Fitness Goal</label>
+              <label className="text-sm font-semibold text-body">Fitness Goal</label>
               <select
                 value={health?.goal ?? ""}
                 onChange={(e) => field("goal", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-surface"
               >
                 <option value="">Select a goal…</option>
                 {GOALS.map((g) => (
@@ -167,34 +167,34 @@ export default function Dashboard() {
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm font-semibold text-ink-700">Medical Conditions / Injuries</label>
+              <label className="text-sm font-semibold text-body">Medical Conditions / Injuries</label>
               <textarea
                 rows={2}
                 value={health?.medical_conditions ?? ""}
                 onChange={(e) => field("medical_conditions", e.target.value)}
                 placeholder="Asthma, past knee injury, none, etc."
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Emergency Contact Name</label>
+              <label className="text-sm font-semibold text-body">Emergency Contact Name</label>
               <input
                 value={health?.emergency_contact_name ?? ""}
                 onChange={(e) => field("emergency_contact_name", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Emergency Contact Phone</label>
+              <label className="text-sm font-semibold text-body">Emergency Contact Phone</label>
               <input
                 value={health?.emergency_contact_phone ?? ""}
                 onChange={(e) => field("emergency_contact_phone", e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-ink-100">
+          <div className="mt-6 pt-6 border-t border-line">
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -203,10 +203,10 @@ export default function Dashboard() {
                 className="mt-1 w-5 h-5 rounded accent-primary-600"
               />
               <span>
-                <span className="block text-sm font-semibold text-ink-800">
+                <span className="block text-sm font-semibold text-body">
                   Share my weight, height, BMI and pulse with batchmates
                 </span>
-                <span className="block text-xs text-ink-500 mt-0.5">
+                <span className="block text-xs text-muted mt-0.5">
                   Your trainer can always see these. Medical notes and emergency contact are never shown to batchmates.
                 </span>
               </span>

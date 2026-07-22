@@ -15,34 +15,34 @@ export default function BatchCard({ batch, isTrainer }) {
             <p className="text-[11px] font-bold uppercase tracking-wider text-primary-600">
               {batchTypeLabel(batch.batch_type)}
             </p>
-            <h3 className="mt-1 text-lg text-ink-900 truncate">{batch.name}</h3>
+            <h3 className="mt-1 text-lg text-body truncate">{batch.name}</h3>
           </div>
           {isTrainer && (
-            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider bg-secondary-100 text-secondary-700 px-2 py-1 rounded-md">
+            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider bg-secondary-500/15 text-secondary-700 px-2 py-1 rounded-md">
               Trainer
             </span>
           )}
         </div>
 
         {batch.description && (
-          <p className="mt-2 text-sm text-ink-500 line-clamp-2">{batch.description}</p>
+          <p className="mt-2 text-sm text-muted line-clamp-2">{batch.description}</p>
         )}
 
-        <div className="mt-4 space-y-1.5 text-xs text-ink-500">
+        <div className="mt-4 space-y-1.5 text-xs text-muted">
           {batch.schedule && (
             <p className="flex items-center gap-2">
-              <Calendar size={14} className="text-ink-400" /> {batch.schedule}
+              <Calendar size={14} className="text-faint" /> {batch.schedule}
             </p>
           )}
           {batch.venue && (
             <p className="flex items-center gap-2">
-              <MapPin size={14} className="text-ink-400" /> {batch.venue}
+              <MapPin size={14} className="text-faint" /> {batch.venue}
             </p>
           )}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-ink-100 flex items-center justify-between">
-          <span className="text-xs font-semibold text-ink-400 flex items-center gap-1.5">
+        <div className="mt-4 pt-4 border-t border-line flex items-center justify-between">
+          <span className="text-xs font-semibold text-faint flex items-center gap-1.5">
             <Users size={14} /> View batch
           </span>
           <ChevronRight size={16} className="text-primary-600 group-hover:translate-x-0.5 transition-transform" />

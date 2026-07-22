@@ -20,15 +20,15 @@ export default function Contact() {
               { icon: Mail, label: "Email", value: club.contact.email, href: `mailto:${club.contact.email}` },
             ].map(({ icon: Icon, label, value, href }) => (
               <div key={label} className="card p-6 flex gap-4">
-                <span className="grid place-items-center w-12 h-12 shrink-0 rounded-xl bg-primary-50 text-primary-600">
+                <span className="grid place-items-center w-12 h-12 shrink-0 rounded-xl bg-primary-500/10 text-primary-600">
                   <Icon size={22} />
                 </span>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-ink-400">{label}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-faint">{label}</p>
                   {href ? (
-                    <a href={href} className="text-ink-800 font-semibold hover:text-primary-600 break-all">{value}</a>
+                    <a href={href} className="text-body font-semibold hover:text-primary-600 break-all">{value}</a>
                   ) : (
-                    <p className="text-ink-700 leading-relaxed">{value}</p>
+                    <p className="text-body leading-relaxed">{value}</p>
                   )}
                 </div>
               </div>

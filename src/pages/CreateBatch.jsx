@@ -39,15 +39,15 @@ export default function CreateBatch() {
     navigate(`/batch/${data.id}`);
   }
 
-  const input = "mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white";
+  const input = "mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-surface";
 
   return (
     <section className="section">
       <div className="container-app max-w-2xl">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
           <p className="eyebrow">Trainer</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-ink-900">Create a Batch</h1>
-          <p className="mt-2 text-ink-500">
+          <h1 className="mt-2 text-3xl font-extrabold text-body">Create a Batch</h1>
+          <p className="mt-2 text-muted">
             A join code is generated automatically. Share it with students so they can join.
           </p>
         </motion.div>
@@ -61,47 +61,47 @@ export default function CreateBatch() {
 
         <form onSubmit={handleSubmit} className="mt-6 card p-6 sm:p-8 space-y-5">
           <div>
-            <label className="text-sm font-semibold text-ink-700">Batch Name *</label>
+            <label className="text-sm font-semibold text-body">Batch Name *</label>
             <input required value={form.name} onChange={(e) => set("name", e.target.value)}
               placeholder="Morning Strength Batch — Spring 2026" className={input} />
           </div>
 
           <div>
-            <label className="text-sm font-semibold text-ink-700">Description</label>
+            <label className="text-sm font-semibold text-body">Description</label>
             <textarea rows={3} value={form.description} onChange={(e) => set("description", e.target.value)}
               placeholder="Who is this batch for, what will they do?" className={input} />
           </div>
 
           <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="text-sm font-semibold text-ink-700">Type</label>
+              <label className="text-sm font-semibold text-body">Type</label>
               <select value={form.batch_type} onChange={(e) => set("batch_type", e.target.value)} className={input}>
                 {BATCH_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Who can join</label>
+              <label className="text-sm font-semibold text-body">Who can join</label>
               <select value={form.gender_policy} onChange={(e) => set("gender_policy", e.target.value)} className={input}>
                 {GENDER_POLICIES.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Schedule</label>
+              <label className="text-sm font-semibold text-body">Schedule</label>
               <input value={form.schedule} onChange={(e) => set("schedule", e.target.value)}
                 placeholder="Sun–Thu, 6:30 AM" className={input} />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Venue</label>
+              <label className="text-sm font-semibold text-body">Venue</label>
               <input value={form.venue} onChange={(e) => set("venue", e.target.value)}
                 placeholder="JUST Gymnasium" className={input} />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Capacity (optional)</label>
+              <label className="text-sm font-semibold text-body">Capacity (optional)</label>
               <input type="number" value={form.capacity} onChange={(e) => set("capacity", e.target.value)}
                 placeholder="30" className={input} />
             </div>
             <div>
-              <label className="text-sm font-semibold text-ink-700">Batch Colour</label>
+              <label className="text-sm font-semibold text-body">Batch Colour</label>
               <div className="mt-2.5 flex gap-2">
                 {COLORS.map((c) => (
                   <button key={c} type="button" onClick={() => set("cover_color", c)}

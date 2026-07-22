@@ -3,64 +3,93 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent;
+  :root {
+    --bg: #F7F8FC;
+    --surface: #FFFFFF;
+    --elevated: #EEF1F7;
+    --line: #E4E8F0;
+    --body: #14172B;
+    --muted: #4A5273;
+    --faint: #949BB3;
   }
-  body {
-    @apply bg-ink-50 text-ink-800 font-sans antialiased;
-  }
-  h1, h2, h3, h4 {
-    @apply font-display font-bold tracking-tight;
-  }
+
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+  body { @apply bg-bg text-body font-sans antialiased; }
+
+  /* No colour here — headings inherit from their section,
+     so white-on-gradient and dark-on-white both work. */
+  h1, h2, h3, h4 { @apply font-display font-bold tracking-tight; }
+
+  ::selection { background: #FF5A1F; color: #fff; }
 }
 
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3
-           font-semibold transition-all duration-200 active:scale-95
-           min-h-[44px] text-sm sm:text-base;
+           font-semibold transition-all duration-200 ease-smooth active:scale-[0.97]
+           min-h-[46px] text-sm;
   }
-  .btn-primary {
-    @apply btn bg-primary-500 text-white hover:bg-primary-600 shadow-glow;
+  .btn-primary { @apply btn bg-primary-500 text-white hover:bg-primary-600 shadow-glow; }
+  .btn-dark    { @apply btn bg-ink-900 text-white hover:bg-ink-800; }
+  .btn-outline { @apply btn border border-line bg-surface text-body hover:border-ink-300 hover:bg-elevated; }
+  .btn-ghost   { @apply btn text-muted hover:text-body hover:bg-elevated; }
+  .btn-white   { @apply btn bg-white text-ink-900 hover:bg-ink-50 shadow-lift; }
+  .btn-glass   { @apply btn bg-white/15 text-white border border-white/30 backdrop-blur-md hover:bg-white/25; }
+
+  .card { @apply bg-surface rounded-2xl border border-line shadow-card; }
+  .card-hover { @apply transition-all duration-300 ease-smooth hover:-translate-y-1 hover:shadow-lift; }
+
+  .container-app { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+  .container-wide { @apply mx-auto w-full max-w-7xl px-4 sm:px-6; }
+  .section { @apply py-16 sm:py-24; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.18em] text-primary-600; }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-surface text-body px-4 py-2.5 text-sm
+           placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-primary-500
+           focus:border-primary-500;
   }
-  .btn-secondary {
-    @apply btn bg-secondary-500 text-white hover:bg-secondary-600;
-  }
-  .btn-ghost {
-    @apply btn bg-white/10 text-white backdrop-blur hover:bg-white/20 border border-white/25;
-  }
-  .btn-outline {
-    @apply btn border-2 border-primary-500 text-primary-600 hover:bg-primary-50;
-  }
-  .card {
-    @apply bg-white rounded-2xl shadow-soft border border-ink-100;
-  }
-  .container-app {
-    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
-  }
-  .section {
-    @apply py-14 sm:py-20;
-  }
-  .eyebrow {
-    @apply text-xs font-bold uppercase tracking-[0.18em] text-primary-600;
+
+  .brand-gradient {
+    background: linear-gradient(115deg, #FF5A1F 0%, #FF2D78 48%, #7C5CFF 100%);
   }
 }
-
-/* Respect users who prefer less motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .grain { position: relative; }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.055;
+    mix-blend-mode: overlay;
+  }
+
+  .text-gradient {
+    background: linear-gradient(115deg, #FF5A1F 0%, #FF2D78 55%, #7C5CFF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #DEE2EC; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #C2C7D6; }

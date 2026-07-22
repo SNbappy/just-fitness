@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const inputCls = "mt-1.5 w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
+const inputCls = "mt-1.5 w-full rounded-xl border border-line px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500";
 
 function Field({ label, children }) {
   return (
     <div>
-      <label className="text-sm font-semibold text-ink-700">{label}</label>
+      <label className="text-sm font-semibold text-body">{label}</label>
       {children}
     </div>
   );
@@ -13,7 +13,7 @@ function Field({ label, children }) {
 
 function Result({ children, note }) {
   return (
-    <div className="mt-5 rounded-2xl bg-primary-50 p-5 text-center">
+    <div className="mt-5 rounded-2xl bg-primary-500/10 p-5 text-center">
       {children}
       {note && <p className="mt-2 text-xs text-primary-700/70 leading-relaxed">{note}</p>}
     </div>
@@ -40,7 +40,7 @@ export function BMICalc() {
       </div>
       {bmi > 0 && (
         <Result note="BMI is a rough screening number. It doesn't account for muscle mass, so athletes often read high.">
-          <p className="text-4xl font-extrabold text-ink-900">{bmi.toFixed(1)}</p>
+          <p className="text-4xl font-extrabold text-body">{bmi.toFixed(1)}</p>
           <p className={`mt-1 font-bold ${category.color}`}>{category.label}</p>
         </Result>
       )}
@@ -64,7 +64,7 @@ export function TDEECalc() {
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Age"><input type="number" value={f.age} onChange={(e) => set("age", e.target.value)} className={inputCls} /></Field>
         <Field label="Gender">
-          <select value={f.gender} onChange={(e) => set("gender", e.target.value)} className={inputCls + " bg-white"}>
+          <select value={f.gender} onChange={(e) => set("gender", e.target.value)} className={inputCls + " bg-surface"}>
             <option value="male">Male</option><option value="female">Female</option>
           </select>
         </Field>
@@ -72,7 +72,7 @@ export function TDEECalc() {
         <Field label="Height (cm)"><input type="number" value={f.height} onChange={(e) => set("height", e.target.value)} className={inputCls} /></Field>
         <div className="sm:col-span-2">
           <Field label="Activity Level">
-            <select value={f.activity} onChange={(e) => set("activity", e.target.value)} className={inputCls + " bg-white"}>
+            <select value={f.activity} onChange={(e) => set("activity", e.target.value)} className={inputCls + " bg-surface"}>
               <option value="1.2">Sedentary — desk work, little exercise</option>
               <option value="1.375">Light — 1–3 sessions/week</option>
               <option value="1.55">Moderate — 3–5 sessions/week</option>
@@ -88,21 +88,21 @@ export function TDEECalc() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-primary-700/70">BMR</p>
-              <p className="text-2xl font-extrabold text-ink-900">{Math.round(bmr)}</p>
+              <p className="text-2xl font-extrabold text-body">{Math.round(bmr)}</p>
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-primary-700/70">Maintenance</p>
-              <p className="text-2xl font-extrabold text-ink-900">{Math.round(tdee)}</p>
+              <p className="text-2xl font-extrabold text-body">{Math.round(tdee)}</p>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-primary-200 grid grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-xs text-primary-700/70 font-semibold">To lose weight</p>
-              <p className="font-bold text-ink-800">{Math.round(tdee - 500)} kcal</p>
+              <p className="font-bold text-body">{Math.round(tdee - 500)} kcal</p>
             </div>
             <div>
               <p className="text-xs text-primary-700/70 font-semibold">To gain weight</p>
-              <p className="font-bold text-ink-800">{Math.round(tdee + 350)} kcal</p>
+              <p className="font-bold text-body">{Math.round(tdee + 350)} kcal</p>
             </div>
           </div>
         </Result>
@@ -128,7 +128,7 @@ export function BodyFatCalc() {
     <div>
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Gender">
-          <select value={f.gender} onChange={(e) => set("gender", e.target.value)} className={inputCls + " bg-white"}>
+          <select value={f.gender} onChange={(e) => set("gender", e.target.value)} className={inputCls + " bg-surface"}>
             <option value="male">Male</option><option value="female">Female</option>
           </select>
         </Field>
@@ -141,7 +141,7 @@ export function BodyFatCalc() {
       </div>
       {bf > 0 && bf < 70 && (
         <Result note="Tape measurements are an estimate with a few percent of error either way. Track the trend over weeks rather than any single reading.">
-          <p className="text-4xl font-extrabold text-ink-900">{bf.toFixed(1)}%</p>
+          <p className="text-4xl font-extrabold text-body">{bf.toFixed(1)}%</p>
           <p className="mt-1 text-sm font-semibold text-primary-700">Estimated body fat</p>
         </Result>
       )}
@@ -165,14 +165,14 @@ export function OneRepMaxCalc() {
       {orm > 0 && (
         <>
           <Result note="Estimates are most accurate under about 10 reps. Warm up thoroughly before working near your max, and use a spotter.">
-            <p className="text-4xl font-extrabold text-ink-900">{orm.toFixed(1)} kg</p>
+            <p className="text-4xl font-extrabold text-body">{orm.toFixed(1)} kg</p>
             <p className="mt-1 text-sm font-semibold text-primary-700">Estimated 1 rep max</p>
           </Result>
           <div className="mt-4 grid grid-cols-4 gap-2">
             {pcts.map((p) => (
-              <div key={p} className="rounded-xl bg-ink-50 p-3 text-center">
-                <p className="text-[10px] font-bold text-ink-400">{p}%</p>
-                <p className="text-sm font-extrabold text-ink-800">{(orm * p / 100).toFixed(1)}</p>
+              <div key={p} className="rounded-xl bg-elevated p-3 text-center">
+                <p className="text-[10px] font-bold text-faint">{p}%</p>
+                <p className="text-sm font-extrabold text-body">{(orm * p / 100).toFixed(1)}</p>
               </div>
             ))}
           </div>
@@ -202,7 +202,7 @@ export function MacroCalc() {
         {presets.map((p) => (
           <button key={p.name} onClick={() => setSplit(p)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold ${
-              split.p === p.p ? "bg-primary-500 text-white" : "bg-ink-100 text-ink-600"
+              split.p === p.p ? "bg-primary-500/100 text-white" : "bg-elevated text-muted"
             }`}>
             {p.name}
           </button>
@@ -211,7 +211,7 @@ export function MacroCalc() {
       {c > 0 && (
         <div className="mt-5 grid grid-cols-3 gap-3">
           {[
-            { label: "Protein", g: (c * split.p / 100 / 4).toFixed(0), pct: split.p, color: "bg-primary-50 text-primary-700" },
+            { label: "Protein", g: (c * split.p / 100 / 4).toFixed(0), pct: split.p, color: "bg-primary-500/10 text-primary-700" },
             { label: "Carbs", g: (c * split.c / 100 / 4).toFixed(0), pct: split.c, color: "bg-blue-50 text-blue-700" },
             { label: "Fat", g: (c * split.f / 100 / 9).toFixed(0), pct: split.f, color: "bg-amber-50 text-amber-700" },
           ].map((m) => (
@@ -241,7 +241,7 @@ export function WaterCalc() {
       </div>
       {litres > 0 && (
         <Result note="A rough target — you need more in Jashore's summer heat. Thirst and pale urine are better day-to-day guides than any formula.">
-          <p className="text-4xl font-extrabold text-ink-900">{litres.toFixed(1)} L</p>
+          <p className="text-4xl font-extrabold text-body">{litres.toFixed(1)} L</p>
           <p className="mt-1 text-sm font-semibold text-primary-700">
             About {Math.round(litres * 4)} glasses
           </p>
@@ -260,7 +260,7 @@ export function HeartRateCalc() {
 
   const zones = [
     { name: "Recovery", lo: 50, hi: 60, color: "bg-blue-50 text-blue-700" },
-    { name: "Fat burn", lo: 60, hi: 70, color: "bg-primary-50 text-primary-700" },
+    { name: "Fat burn", lo: 60, hi: 70, color: "bg-primary-500/10 text-primary-700" },
     { name: "Aerobic", lo: 70, hi: 80, color: "bg-amber-50 text-amber-700" },
     { name: "Anaerobic", lo: 80, hi: 90, color: "bg-orange-50 text-orange-700" },
     { name: "Maximum", lo: 90, hi: 100, color: "bg-red-50 text-red-700" },
@@ -274,7 +274,7 @@ export function HeartRateCalc() {
       </div>
       {max && (
         <>
-          <Result><p className="text-4xl font-extrabold text-ink-900">{max}</p>
+          <Result><p className="text-4xl font-extrabold text-body">{max}</p>
             <p className="mt-1 text-sm font-semibold text-primary-700">Estimated max heart rate</p></Result>
           <div className="mt-4 space-y-2">
             {zones.map((z) => {

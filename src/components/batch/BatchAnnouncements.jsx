@@ -68,7 +68,7 @@ export default function BatchAnnouncements({ batchId, isTrainer }) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Post an announcement — schedule change, reminder, motivation…"
-            className="w-full rounded-xl border border-ink-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+            className="w-full rounded-xl border border-line px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
           />
           <div className="mt-3 flex justify-end">
             <button type="submit" disabled={posting || !content.trim()} className="btn-primary">
@@ -80,9 +80,9 @@ export default function BatchAnnouncements({ batchId, isTrainer }) {
 
       {posts.length === 0 ? (
         <div className="card p-10 text-center mt-5">
-          <Megaphone className="mx-auto text-ink-300" size={34} />
-          <p className="mt-3 font-semibold text-ink-600">No announcements yet</p>
-          <p className="text-sm text-ink-400 mt-1">
+          <Megaphone className="mx-auto text-faint" size={34} />
+          <p className="mt-3 font-semibold text-muted">No announcements yet</p>
+          <p className="text-sm text-faint mt-1">
             {isTrainer ? "Post the first one above." : "Your trainer hasn't posted anything yet."}
           </p>
         </div>
@@ -100,10 +100,10 @@ export default function BatchAnnouncements({ batchId, isTrainer }) {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-bold text-ink-900 text-sm">
+                    <p className="font-bold text-body text-sm">
                       {p.profiles?.full_name || "Trainer"}
                     </p>
-                    <p className="text-xs text-ink-400">
+                    <p className="text-xs text-faint">
                       {new Date(p.created_at).toLocaleString([], {
                         day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
                       })}
@@ -113,20 +113,20 @@ export default function BatchAnnouncements({ batchId, isTrainer }) {
                   {isTrainer && (
                     <div className="flex gap-1 shrink-0">
                       <button onClick={() => togglePin(p)}
-                        className={`grid place-items-center w-8 h-8 rounded-lg hover:bg-ink-100 ${
-                          p.pinned ? "text-secondary-600" : "text-ink-400"}`}
+                        className={`grid place-items-center w-8 h-8 rounded-lg hover:bg-elevated ${
+                          p.pinned ? "text-secondary-600" : "text-faint"}`}
                         title={p.pinned ? "Unpin" : "Pin"}>
                         <Pin size={15} />
                       </button>
                       <button onClick={() => remove(p.id)}
-                        className="grid place-items-center w-8 h-8 rounded-lg hover:bg-red-50 text-ink-400 hover:text-red-600"
+                        className="grid place-items-center w-8 h-8 rounded-lg hover:bg-red-50 text-faint hover:text-red-600"
                         title="Delete">
                         <Trash2 size={15} />
                       </button>
                     </div>
                   )}
                 </div>
-                <p className="mt-3 text-ink-700 whitespace-pre-wrap leading-relaxed">{p.content}</p>
+                <p className="mt-3 text-body whitespace-pre-wrap leading-relaxed">{p.content}</p>
               </motion.div>
             ))}
           </AnimatePresence>

@@ -51,7 +51,7 @@ export default function MemberProfile() {
   }, [userId, batchId, user, me]);
 
   if (loading) return <Spinner full />;
-  if (!person) return <div className="section container-app text-center text-ink-500">Member not found.</div>;
+  if (!person) return <div className="section container-app text-center text-muted">Member not found.</div>;
 
   const canSeeVitals = isSelf || isTrainer || health?.share_stats_with_batchmates;
   const canSeeMedical = isSelf || isTrainer;
@@ -67,7 +67,7 @@ export default function MemberProfile() {
   return (
     <section className="section">
       <div className="container-app max-w-3xl">
-        <Link to={`/batch/${batchId}`} className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-primary-600">
+        <Link to={`/batch/${batchId}`} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-primary-600">
           <ArrowLeft size={16} /> Back to batch
         </Link>
 
@@ -81,13 +81,13 @@ export default function MemberProfile() {
             </span>
           )}
           <div className="min-w-0">
-            <h1 className="text-2xl font-extrabold text-ink-900">{person.full_name}</h1>
-            <p className="mt-1 text-ink-500 text-sm">
+            <h1 className="text-2xl font-extrabold text-body">{person.full_name}</h1>
+            <p className="mt-1 text-muted text-sm">
               {person.department || "Department not set"}
               {person.student_id ? ` · ${person.student_id}` : ""}
             </p>
             <div className="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
-              <span className="text-xs font-bold uppercase tracking-wider bg-ink-100 text-ink-600 px-2.5 py-1 rounded-md capitalize">
+              <span className="text-xs font-bold uppercase tracking-wider bg-elevated text-muted px-2.5 py-1 rounded-md capitalize">
                 {person.role}
               </span>
               {person.blood_group && (
@@ -96,7 +96,7 @@ export default function MemberProfile() {
                 </span>
               )}
               {health?.goal && (
-                <span className="text-xs font-bold uppercase tracking-wider bg-primary-50 text-primary-700 px-2.5 py-1 rounded-md">
+                <span className="text-xs font-bold uppercase tracking-wider bg-primary-500/10 text-primary-700 px-2.5 py-1 rounded-md">
                   {GOAL_LABELS[health.goal]}
                 </span>
               )}
@@ -109,7 +109,7 @@ export default function MemberProfile() {
             <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
               <Stat icon={Weight} label="Current Weight" value={health.current_weight_kg ? `${health.current_weight_kg} kg` : "—"} color="bg-blue-50 text-blue-600" />
               <Stat icon={Ruler} label="Height" value={health.height_cm ? `${health.height_cm} cm` : "—"} color="bg-violet-50 text-violet-600" />
-              <Stat icon={Activity} label="BMI" value={bmi ?? "—"} color="bg-primary-50 text-primary-600" />
+              <Stat icon={Activity} label="BMI" value={bmi ?? "—"} color="bg-primary-500/10 text-primary-600" />
               <Stat icon={HeartPulse} label="Morning Pulse" value={health.current_pulse ? `${health.current_pulse} bpm` : "—"} color="bg-rose-50 text-rose-600" />
             </div>
 
@@ -119,10 +119,10 @@ export default function MemberProfile() {
                   <Target size={20} />
                 </span>
                 <div>
-                  <p className="text-sm font-bold text-ink-900">
+                  <p className="text-sm font-bold text-body">
                     {weightChange > 0 ? "+" : ""}{weightChange} kg since joining
                   </p>
-                  <p className="text-xs text-ink-500">
+                  <p className="text-xs text-muted">
                     Started at {health.joining_weight_kg} kg
                     {health.joined_club_at ? ` on ${new Date(health.joined_club_at).toLocaleDateString()}` : ""}
                   </p>
@@ -132,9 +132,9 @@ export default function MemberProfile() {
           </>
         ) : (
           <div className="mt-6 card p-8 text-center">
-            <Lock className="mx-auto text-ink-300" size={30} />
-            <p className="mt-3 font-semibold text-ink-600">Health stats are private</p>
-            <p className="text-sm text-ink-400 mt-1">
+            <Lock className="mx-auto text-faint" size={30} />
+            <p className="mt-3 font-semibold text-muted">Health stats are private</p>
+            <p className="text-sm text-faint mt-1">
               This member has chosen not to share their vitals with batchmates.
             </p>
           </div>
@@ -147,15 +147,15 @@ export default function MemberProfile() {
             </p>
             {health.medical_conditions && (
               <div className="mt-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-ink-400">Medical Conditions / Injuries</p>
-                <p className="mt-1 text-ink-700">{health.medical_conditions}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-faint">Medical Conditions / Injuries</p>
+                <p className="mt-1 text-body">{health.medical_conditions}</p>
               </div>
             )}
             {health.emergency_contact_phone && (
               <div className="mt-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-ink-400">Emergency Contact</p>
-                <p className="mt-1 text-ink-700 flex items-center gap-2">
-                  <Phone size={15} className="text-ink-400" />
+                <p className="text-xs font-bold uppercase tracking-wider text-faint">Emergency Contact</p>
+                <p className="mt-1 text-body flex items-center gap-2">
+                  <Phone size={15} className="text-faint" />
                   {health.emergency_contact_name || "Contact"} — {health.emergency_contact_phone}
                 </p>
               </div>
@@ -173,8 +173,8 @@ function Stat({ icon: Icon, label, value, color }) {
       <span className={`grid place-items-center w-11 h-11 rounded-xl ${color}`}>
         <Icon size={20} />
       </span>
-      <p className="mt-3 text-xl font-extrabold text-ink-900">{value}</p>
-      <p className="text-xs text-ink-500 font-semibold">{label}</p>
+      <p className="mt-3 text-xl font-extrabold text-body">{value}</p>
+      <p className="text-xs text-muted font-semibold">{label}</p>
     </div>
   );
 }
