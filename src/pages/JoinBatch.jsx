@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { KeyRound, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
@@ -8,10 +8,17 @@ import { joinBatchByCode } from "../lib/batches";
 export default function JoinBatch() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fromUrl = params.get("code");
+    if (fromUrl) setCode(fromUrl.toUpperCase().slice(0, 6));
+  }, [params]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -38,9 +45,7 @@ export default function JoinBatch() {
             <KeyRound size={30} />
           </span>
           <h1 className="mt-5 text-3xl font-extrabold text-ink-900">Join a Batch</h1>
-          <p className="mt-2 text-ink-500">
-            Enter the 6-character code your trainer gave you.
-          </p>
+          <p className="mt-2 text-ink-500">Enter the 6-character code your trainer gave you.</p>
         </motion.div>
 
         {error && (
