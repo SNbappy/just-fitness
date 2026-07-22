@@ -11,6 +11,9 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Track from "./pages/Track";
+import Progress from "./pages/Progress";
+import Tools from "./pages/Tools";
 import Batches from "./pages/Batches";
 import CreateBatch from "./pages/CreateBatch";
 import JoinBatch from "./pages/JoinBatch";
@@ -37,6 +40,9 @@ export default function App() {
 
             <Route path="/dashboard" element={guard(<Dashboard />)} />
             <Route path="/batches" element={guard(<Batches />)} />
+            <Route path="/track" element={guard(<Track />)} />
+            <Route path="/progress" element={guard(<Progress />)} />
+            <Route path="/tools" element={guard(<Tools />)} />
             <Route path="/join-batch" element={guard(<JoinBatch />)} />
             <Route path="/create-batch" element={guard(<CreateBatch />, ["trainer", "admin"])} />
             <Route path="/batch/:id" element={guard(<BatchDetail />)} />

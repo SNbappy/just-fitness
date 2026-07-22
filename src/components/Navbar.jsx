@@ -83,7 +83,13 @@ export default function Navbar() {
           {user ? (
             <>
               <Link to="/batches" className="btn text-ink-700 hover:bg-ink-100">
-                My Batches
+                Batches
+              </Link>
+              <Link to="/track" className="btn text-ink-700 hover:bg-ink-100">
+                Track
+              </Link>
+              <Link to="/tools" className="btn text-ink-700 hover:bg-ink-100">
+                Tools
               </Link>
               <Link to="/dashboard" className="btn text-ink-700 hover:bg-ink-100">
                 <LayoutDashboard size={17} />
