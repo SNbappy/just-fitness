@@ -24,6 +24,7 @@ import Track from "./pages/Track";
 import ProgressPage from "./pages/Progress";
 import Tools from "./pages/Tools";
 import NotFound from "./pages/NotFound";
+import Welcome from "./pages/Welcome";
 
 import Profile from "./pages/Profile";
 
@@ -58,6 +59,7 @@ export default function App() {
               <Route path="/batch/:id" element={guard(<BatchDetail />)} />
               <Route path="/batch/:id/member/:userId" element={guard(<MemberProfile />)} />
             </Route>
+            <Route path="/welcome" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

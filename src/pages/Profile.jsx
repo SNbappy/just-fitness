@@ -4,6 +4,7 @@ import { useAuth } from "../lib/AuthContext";
 import { supabase } from "../lib/supabase";
 import { uploadAvatarBlob } from "../lib/avatar";
 import Avatar from "../components/Avatar";
+import ProfilePreview from "../components/app/ProfilePreview";
 import AvatarCropper from "../components/AvatarCropper";
 import ImageViewer from "../components/ImageViewer";
 import Spinner from "../components/Spinner";
@@ -46,7 +47,15 @@ export default function Profile() {
     const [error, setError] = useState("");
     const [cropFile, setCropFile] = useState(null);
   const [viewing, setViewing] = useState(false);
+    const [previewing, setPreviewing] = useState(false);
+    const [healthData, setHealthData] = useState(null);
   const fileRef = useRef(null);
+
+    useEffect(() => {
+        if (!user) return;
+        supabase.from("health_profiles").select("*").eq("user_id", user.id).maybeSingle()
+            .then(({ data }) => setHealthData(data));
+    }, [user]);
 
     useEffect(() => {
         if (profile) {
@@ -158,6 +167,7 @@ export default function Profile() {
                             {form.affiliation || "student"}
                             {form.department ? ` · ${form.department}` : ""}
                         </p>
+                        <button type="button" onClick={() => setPreviewing(true)} className="btn-outline mb-4">Preview as batchmate</button>
                         <p className="mt-4 text-sm text-muted max-w-md">
                             A clear photo helps your trainer and batchmates recognise you at sessions.
                             Images are cropped square and compressed automatically.
@@ -326,6 +336,13 @@ export default function Profile() {
         {viewing && (
           <ImageViewer src={form.photo_url} alt={form.full_name} onClose={() => setViewing(false)} />
         )}
+            {previewing && (
+                <ProfilePreview
+                    profile={form}
+                    health={healthData}
+                    onClose={() => setPreviewing(false)}
+                />
+            )}
     </>
     );
 }

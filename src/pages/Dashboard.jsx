@@ -1,215 +1,215 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Save, Check, ArrowUpRight, Users, TrendingUp, Plus } from "lucide-react";
-import { firstName } from "../lib/names";
+import {
+  Plus, Check, Flame, TrendingUp, TrendingDown, Users, CalendarCheck,
+  Megaphone, ArrowUpRight, Percent, Activity, Dumbbell,
+} from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
-import { supabase } from "../lib/supabase";
+import { getDashboardData } from "../lib/dashboard";
+import { computeStreak } from "../lib/logs";
+import { firstName } from "../lib/names";
+import { batchTypeLabel } from "../lib/batches";
 import Spinner from "../components/Spinner";
 import AppPageHeader from "../components/app/AppPageHeader";
 import ProfileNudge from "../components/app/ProfileNudge";
 
-const GOALS = [
-  { value: "weight_loss", label: "Weight loss" },
-  { value: "muscle_gain", label: "Muscle gain" },
-  { value: "general_fitness", label: "General fitness" },
-  { value: "sports_performance", label: "Sports performance" },
-  { value: "rehabilitation", label: "Rehabilitation" },
-];
-
-const inputCls =
-  "w-full border border-line bg-surface text-body px-4 py-3 text-sm placeholder:text-faint focus:outline-none focus:border-electric-500";
-const labelCls =
-  "block text-[10px] font-bold uppercase tracking-[0.2em] text-muted mb-2";
+function Stat({ label, value, unit, trend }) {
+  return (
+    <div className="p-6">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-faint">{label}</p>
+      <p className="mt-3 mega text-4xl text-body tabular flex items-baseline gap-1.5">
+        {value}
+        {unit && value !== "—" && <span className="text-base text-faint">{unit}</span>}
+        {trend != null && trend !== 0 && (
+          <span className={`text-sm ${trend < 0 ? "text-emerald-600" : "text-amber-600"}`}>
+            {trend < 0 ? <TrendingDown size={16} /> : <TrendingUp size={16} />}
+          </span>
+        )}
+      </p>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const { user, profile } = useAuth();
-  const [health, setHealth] = useState(null);
+  const [d, setD] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+
+  const isTrainer = profile?.role === "trainer" || profile?.role === "admin";
 
   useEffect(() => {
     let active = true;
     async function load() {
-      const { data, error } = await supabase
-        .from("health_profiles").select("*").eq("user_id", user.id).single();
-      if (active && !error) setHealth(data);
-      if (active) setLoading(false);
+      const data = await getDashboardData(user.id, isTrainer);
+      if (active) { setD(data); setLoading(false); }
     }
-    if (user) load();
+    if (user && profile) load();
     return () => { active = false; };
-  }, [user]);
+  }, [user, profile, isTrainer]);
 
-  function field(key, value) {
-    setHealth((p) => ({ ...p, [key]: value }));
-    setSaved(false);
-  }
+  if (loading || !d) return <Spinner full />;
 
-  async function handleSave(e) {
-    e.preventDefault();
-    setSaving(true);
-    const { error } = await supabase.from("health_profiles").update({
-      joining_weight_kg: health.joining_weight_kg || null,
-      height_cm: health.height_cm || null,
-      current_weight_kg: health.current_weight_kg || null,
-      current_pulse: health.current_pulse || null,
-      goal: health.goal || null,
-      medical_conditions: health.medical_conditions || null,
-      emergency_contact_name: health.emergency_contact_name || null,
-      emergency_contact_phone: health.emergency_contact_phone || null,
-      share_stats_with_batchmates: health.share_stats_with_batchmates,
-      updated_at: new Date().toISOString(),
-    }).eq("user_id", user.id);
-    setSaving(false);
-    if (!error) { setSaved(true); setTimeout(() => setSaved(false), 2500); }
-  }
+  const streak = computeStreak(d.logs);
+  const weights = d.logs.filter((l) => l.weight_kg != null);
+  const latest = weights[0]?.weight_kg;
+  const prev = weights[1]?.weight_kg;
+  const trend = latest != null && prev != null ? latest - prev : null;
 
-  const bmi = health?.current_weight_kg && health?.height_cm
-    ? (health.current_weight_kg / Math.pow(health.height_cm / 100, 2)).toFixed(1)
+  const bmi = d.health?.current_weight_kg && d.health?.height_cm
+    ? (d.health.current_weight_kg / Math.pow(d.health.height_cm / 100, 2)).toFixed(1)
     : null;
 
-  const change = health?.current_weight_kg && health?.joining_weight_kg
-    ? (health.current_weight_kg - health.joining_weight_kg).toFixed(1)
-    : null;
-
-  if (loading) return <Spinner full />;
-
-  const stats = [
-    { label: "Current weight", value: health?.current_weight_kg ? `${health.current_weight_kg}` : "—", unit: "kg" },
-    { label: "Height", value: health?.height_cm ? `${health.height_cm}` : "—", unit: "cm" },
-    { label: "BMI", value: bmi ?? "—", unit: "" },
-    { label: "Morning pulse", value: health?.current_pulse ?? "—", unit: "bpm" },
-  ];
+  const attended = d.attendance.filter((a) => a.status === "present" || a.status === "late").length;
+  const rate = d.attendance.length ? Math.round((attended / d.attendance.length) * 100) : null;
 
   return (
     <>
       <AppPageHeader eyebrow={profile?.role} title="Welcome," accent={firstName(profile?.full_name)}>
-        <Link to="/track" className="btn-primary"><Plus size={16} /> Check in</Link>
+        {!d.checkedInToday && (
+          <Link to="/track" className="btn-primary"><Plus size={16} /> Check in</Link>
+        )}
       </AppPageHeader>
 
-      <div className="container-app py-10">
-        <div className="mb-6"><ProfileNudge /></div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 border border-line bg-surface">
-          {stats.map((s, i) => (
-            <div key={s.label} className={`p-6 ${i % 2 === 1 ? "border-l" : ""} ${i >= 2 ? "border-t" : ""} lg:border-t-0 ${i > 0 ? "lg:border-l" : ""} border-line`}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-faint">{s.label}</p>
-              <p className="mt-3 mega text-4xl text-body tabular">
-                {s.value}
-                {s.unit && s.value !== "—" && (
-                  <span className="text-lg text-faint ml-1.5">{s.unit}</span>
-                )}
-              </p>
-            </div>
-          ))}
+      <div className="container-app py-10 space-y-6">
+        <ProfileNudge />
+
+        {/* Today */}
+        <div className={`border px-6 py-5 flex items-center gap-4 ${d.checkedInToday ? "border-line bg-surface" : "border-electric-500 bg-electric-500/5"
+          }`}>
+          <span className={`grid place-items-center w-11 h-11 shrink-0 ${d.checkedInToday ? "bg-emerald-500/10 text-emerald-600" : "bg-electric-500 text-white"
+            }`}>
+            {d.checkedInToday ? <Check size={20} /> : <Plus size={20} />}
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-body">
+              {d.checkedInToday ? "Checked in today" : "You haven't checked in today"}
+            </p>
+            <p className="text-xs text-muted mt-0.5">
+              {d.checkedInToday
+                ? d.todayLog?.workout_done ? "Workout logged. Nice work." : "Logged — add your workout if you trained."
+                : "Takes under a minute. Weight, sleep, water, mood."}
+            </p>
+          </div>
+          <Link to="/track" className={d.checkedInToday ? "btn-outline" : "btn-primary"}>
+            {d.checkedInToday ? "Edit" : "Check in"}
+          </Link>
         </div>
 
-        {change && (
-          <div className="mt-5 border border-line bg-surface p-6 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-faint">Since joining</p>
-              <p className="mt-2 mega text-3xl text-body tabular">
-                {change > 0 ? "+" : ""}{change} <span className="text-lg text-faint">kg</span>
-              </p>
+        {/* Personal stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 border border-line bg-surface divide-x divide-y lg:divide-y-0 divide-line">
+          <Stat label="Current weight" value={d.health?.current_weight_kg ?? "—"} unit="kg" trend={trend} />
+          <Stat label="BMI" value={bmi ?? "—"} />
+          <Stat label="Log streak" value={streak} unit={streak === 1 ? "day" : "days"} />
+          <Stat label="Attendance" value={rate ?? "—"} unit={rate != null ? "%" : ""} />
+        </div>
+
+        {/* Trainer / admin */}
+        {isTrainer && d.trainerStats && (
+          <div className="border border-line bg-surface">
+            <div className="px-6 py-4 border-b border-line flex items-center justify-between">
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted">
+                Batches I train
+              </h2>
+              <Link to="/batches" className="text-[10px] font-bold uppercase tracking-[0.2em] text-electric-600 hover:underline">
+                Manage
+              </Link>
             </div>
-            <Link to="/progress" className="btn-outline"><TrendingUp size={15} /> Progress</Link>
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-line">
+              <Stat label="Batches" value={d.trainerStats.batches} />
+              <Stat label="Members" value={d.trainerStats.members} />
+              <Stat label="Sessions held" value={d.trainerStats.sessions} />
+              <Stat label="Attendance rate" value={d.trainerStats.rate ?? "—"} unit={d.trainerStats.rate != null ? "%" : ""} />
+            </div>
           </div>
         )}
 
-        <div className="mt-5 grid sm:grid-cols-2 gap-5">
-          <Link to="/batches" className="group border border-line bg-surface p-7 hover:border-electric-400 transition-colors">
-            <Users size={22} className="text-electric-500" />
-            <p className="mt-5 mega text-2xl text-body">My batches</p>
-            <p className="mt-2 text-sm text-muted">View your training batches and join with a code.</p>
-            <ArrowUpRight size={18} className="mt-4 text-faint group-hover:text-electric-500 group-hover:translate-x-0.5 transition-all" />
-          </Link>
-          <Link to="/track" className="group border border-line bg-surface p-7 hover:border-electric-400 transition-colors">
-            <Plus size={22} className="text-electric-500" />
-            <p className="mt-5 mega text-2xl text-body">Daily check-in</p>
-            <p className="mt-2 text-sm text-muted">Log weight, pulse, sleep and water in under a minute.</p>
-            <ArrowUpRight size={18} className="mt-4 text-faint group-hover:text-electric-500 group-hover:translate-x-0.5 transition-all" />
-          </Link>
-        </div>
-
-        <form onSubmit={handleSave} className="mt-10 border border-line bg-surface">
-          <div className="px-7 py-6 border-b border-line">
-            <h2 className="mega text-2xl text-body">Health profile</h2>
-            <p className="mt-2 text-sm text-muted">
-              Private. Only you and the trainer of a batch you join can see this.
-            </p>
-          </div>
-
-          <div className="p-7 grid sm:grid-cols-2 gap-6">
-            <div>
-              <label className={labelCls}>Weight at joining (kg)</label>
-              <input type="number" step="0.1" value={health?.joining_weight_kg ?? ""}
-                onChange={(e) => field("joining_weight_kg", e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Current weight (kg)</label>
-              <input type="number" step="0.1" value={health?.current_weight_kg ?? ""}
-                onChange={(e) => field("current_weight_kg", e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Height (cm)</label>
-              <input type="number" step="0.1" value={health?.height_cm ?? ""}
-                onChange={(e) => field("height_cm", e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Morning pulse (bpm)</label>
-              <input type="number" value={health?.current_pulse ?? ""}
-                onChange={(e) => field("current_pulse", e.target.value)} className={inputCls} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelCls}>Fitness goal</label>
-              <select value={health?.goal ?? ""} onChange={(e) => field("goal", e.target.value)}
-                className={inputCls}>
-                <option value="">Select a goal</option>
-                {GOALS.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
-              </select>
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelCls}>Medical conditions / injuries</label>
-              <textarea rows={2} value={health?.medical_conditions ?? ""}
-                onChange={(e) => field("medical_conditions", e.target.value)}
-                placeholder="Asthma, past knee injury, none" className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Emergency contact name</label>
-              <input value={health?.emergency_contact_name ?? ""}
-                onChange={(e) => field("emergency_contact_name", e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Emergency contact phone</label>
-              <input value={health?.emergency_contact_phone ?? ""}
-                onChange={(e) => field("emergency_contact_phone", e.target.value)} className={inputCls} />
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* My batches */}
+          <div className="border border-line bg-surface">
+            <div className="px-6 py-4 border-b border-line flex items-center justify-between">
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted">
+                My batches
+              </h2>
+              <Link to="/batches" className="text-[10px] font-bold uppercase tracking-[0.2em] text-electric-600 hover:underline">
+                All
+              </Link>
             </div>
 
-            <label className="sm:col-span-2 flex items-start gap-3 cursor-pointer border-t border-line pt-6">
-              <input type="checkbox" checked={health?.share_stats_with_batchmates ?? true}
-                onChange={(e) => field("share_stats_with_batchmates", e.target.checked)}
-                className="mt-0.5 w-5 h-5 accent-electric-500" />
-              <span>
-                <span className="block text-sm font-bold text-body">
-                  Share weight, height, BMI and pulse with batchmates
-                </span>
-                <span className="block text-xs text-muted mt-1">
-                  Your trainer always sees these. Medical notes and emergency contact are never shown to batchmates.
-                </span>
-              </span>
-            </label>
-          </div>
-
-          <div className="px-7 py-6 border-t border-line flex items-center gap-4">
-            <button type="submit" disabled={saving} className="btn-primary">
-              <Save size={16} /> {saving ? "Saving" : "Save profile"}
-            </button>
-            {saved && (
-              <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.15em] text-electric-600">
-                <Check size={15} /> Saved
-              </span>
+            {d.batches.length === 0 ? (
+              <div className="p-10 text-center">
+                <Users className="mx-auto text-faint" size={28} />
+                <p className="mt-4 text-sm font-bold text-body">Not in a batch yet</p>
+                <p className="mt-1 text-xs text-muted">Ask your trainer for the join code.</p>
+                <Link to="/join-batch" className="btn-primary mt-5">Join a batch</Link>
+              </div>
+            ) : (
+              <ul className="divide-y divide-line">
+                {d.batches.slice(0, 4).map((b) => (
+                  <li key={b.id}>
+                    <Link to={`/batch/${b.id}`} className="group flex items-center gap-4 px-6 py-4 hover:bg-elevated transition-colors">
+                      <span className="w-1 h-10 shrink-0" style={{ background: b.cover_color || "#2E6BFF" }} />
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm font-bold text-body truncate">{b.name}</span>
+                        <span className="block text-xs text-muted mt-0.5 truncate">
+                          {batchTypeLabel(b.batch_type)}{b.schedule ? ` · ${b.schedule}` : ""}
+                        </span>
+                      </span>
+                      <ArrowUpRight size={16} className="text-faint group-hover:text-electric-500 transition-colors shrink-0" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
-        </form>
+
+          {/* Latest announcement */}
+          <div className="border border-line bg-surface">
+            <div className="px-6 py-4 border-b border-line">
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted">
+                Latest announcement
+              </h2>
+            </div>
+            {d.latestPost ? (
+              <div className="p-6">
+                <p className="text-sm text-body leading-relaxed whitespace-pre-wrap line-clamp-5">
+                  {d.latestPost.content}
+                </p>
+                <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-faint">
+                  {d.latestPost.profiles?.full_name || "Trainer"} ·{" "}
+                  {new Date(d.latestPost.created_at).toLocaleDateString([], { day: "numeric", month: "short" })}
+                </p>
+                <Link to={`/batch/${d.latestPost.batch_id}`}
+                  className="mt-5 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-electric-600 hover:underline">
+                  Open batch <ArrowUpRight size={13} />
+                </Link>
+              </div>
+            ) : (
+              <div className="p-10 text-center">
+                <Megaphone className="mx-auto text-faint" size={28} />
+                <p className="mt-4 text-sm font-bold text-body">Nothing yet</p>
+                <p className="mt-1 text-xs text-muted">
+                  Announcements from your trainer will appear here.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick links */}
+        <div className="grid sm:grid-cols-3 gap-4">
+          {[
+            { to: "/progress", icon: Activity, label: "Progress", desc: "Charts and trends" },
+            { to: "/tools", icon: Dumbbell, label: "Tools", desc: "Timers and calculators" },
+            { to: "/profile", icon: CalendarCheck, label: "Profile", desc: "Details and health data" },
+          ].map((q) => (
+            <Link key={q.to} to={q.to}
+              className="group border border-line bg-surface p-6 hover:border-electric-400 transition-colors">
+              <q.icon size={20} className="text-electric-500" />
+              <p className="mt-4 mega text-xl text-body">{q.label}</p>
+              <p className="mt-1 text-xs text-muted">{q.desc}</p>
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );
