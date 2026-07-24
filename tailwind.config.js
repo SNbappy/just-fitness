@@ -12,6 +12,16 @@ export default {
         muted: "var(--muted)",
         faint: "var(--faint)",
 
+        void: "#08090D",
+        carbon: "#101218",
+        smoke: "#191D28",
+        volt: "#00E0FF",
+        electric: {
+          50: "#EEF3FF", 100: "#DCE6FF", 200: "#BACDFF", 300: "#8DAAFF",
+          400: "#5B8CFF", 500: "#2E6BFF", 600: "#1B52E0", 700: "#1440B8",
+          800: "#123593", 900: "#122C74",
+        },
+
         primary: {
           50: "#EFF6FF", 100: "#DBEAFE", 200: "#BFDBFE", 300: "#93C5FD",
           400: "#60A5FA", 500: "#3B82F6", 600: "#2563EB", 700: "#1D4ED8",
@@ -39,6 +49,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
         display: ["'Bricolage Grotesque'", "Inter", "system-ui", "sans-serif"],
+        mega: ["Anton", "Impact", "Haettenschweiler", "sans-serif"],
       },
       borderRadius: { xl: "14px", "2xl": "20px", "3xl": "28px", "4xl": "36px" },
       boxShadow: {
@@ -48,16 +59,30 @@ export default {
         float: "0 24px 60px -18px rgba(15,18,34,0.28)",
       },
       keyframes: {
-        float: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-14px)" } },
+        float: {
+          "0%,100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-14px)" },
+        },
         drift: {
           "0%,100%": { transform: "translate(0,0) scale(1)" },
           "50%": { transform: "translate(4%,-6%) scale(1.1)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "marquee-rev": {
+          from: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(0)" },
         },
       },
       animation: {
         float: "float 7s ease-in-out infinite",
         drift: "drift 26s ease-in-out infinite",
         "drift-slow": "drift 38s ease-in-out infinite",
+        marquee: "marquee 32s linear infinite",
+        "marquee-fast": "marquee 18s linear infinite",
+        "marquee-rev": "marquee-rev 32s linear infinite",
       },
       transitionTimingFunction: { smooth: "cubic-bezier(0.22, 1, 0.36, 1)" },
     },

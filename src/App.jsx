@@ -25,6 +25,8 @@ import ProgressPage from "./pages/Progress";
 import Tools from "./pages/Tools";
 import NotFound from "./pages/NotFound";
 
+import Profile from "./pages/Profile";
+
 const guard = (el, roles) => <ProtectedRoute roles={roles}>{el}</ProtectedRoute>;
 
 export default function App() {
@@ -44,7 +46,8 @@ export default function App() {
               <Route path="*" element={<NotFound />} />
             </Route>
 
-            <Route element={<AppLayout />}>
+          <Route element={<AppLayout />}>
+            <Route path="/profile" element={guard(<Profile />)} />
               <Route path="/dashboard" element={guard(<Dashboard />)} />
               <Route path="/batches" element={guard(<Batches />)} />
               <Route path="/track" element={guard(<Track />)} />

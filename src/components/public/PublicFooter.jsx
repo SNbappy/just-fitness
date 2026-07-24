@@ -1,87 +1,60 @@
 import { Link } from "react-router-dom";
-import { Dumbbell, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { club } from "../../data/club";
 
-function FacebookIcon({ size = 18 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.19 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.75 8.44-4.92 8.44-9.94z" />
-    </svg>
-  );
-}
+const LINKS = [
+  ["/about", "About"], ["/gallery", "Gallery"], ["/events", "Events"],
+  ["/notices", "Notices"], ["/contact", "Contact"], ["/signup", "Join"],
+];
 
 export default function PublicFooter() {
   return (
-    <footer className="relative bg-void text-white/45 mt-auto grain overflow-hidden">
-      <div className="absolute -top-32 left-1/3 w-[40vw] h-[40vw] max-w-[500px] rounded-full bg-electric-600/15 blur-[130px] pointer-events-none" />
-
-      <div className="container-wide relative py-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="sm:col-span-2 lg:col-span-1">
-          <div className="flex items-center gap-2.5 mb-5">
-            <span className="grid place-items-center w-10 h-10 rounded-xl bg-electric-500 text-white">
-              <Dumbbell size={20} strokeWidth={2.5} />
-            </span>
-            <span className="mega text-white text-2xl">JUST HFC</span>
+    <footer className="bg-void text-white border-t border-white/10 grain">
+      <div className="container-wide pt-16 pb-10">
+        <div className="grid lg:grid-cols-[1.4fr,1fr,1fr] gap-12 lg:gap-16">
+          <div>
+            <p className="mega text-[clamp(2.2rem,6vw,4rem)] leading-[0.9]">
+              JUST<br /><span className="text-electric-500">HFC</span>
+            </p>
+            <p className="mt-6 max-w-sm text-sm text-white/45 leading-relaxed">{club.intro}</p>
           </div>
-          <p className="text-sm leading-relaxed text-white/45">{club.intro}</p>
-          {club.social.facebook && (
-            <a href={club.social.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"
-              className="mt-5 inline-grid place-items-center w-11 h-11 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-electric-500 hover:border-electric-500 transition-colors">
-              <FacebookIcon />
-            </a>
-          )}
-        </div>
 
-        <div>
-          <h4 className="text-white text-xs font-bold uppercase tracking-[0.15em] mb-5">Explore</h4>
-          <ul className="space-y-3 text-sm">
-            {[
-              ["/about", "About the club"],
-              ["/gallery", "Gallery"],
-              ["/events", "Events"],
-              ["/notices", "Notices"],
-              ["/signup", "Become a member"],
-            ].map(([to, label]) => (
-              <li key={to}>
-                <Link to={to} className="hover:text-white transition-colors">{label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/30">Explore</p>
+            <ul className="mt-6 space-y-3">
+              {LINKS.map(([to, label]) => (
+                <li key={to}>
+                  <Link to={to} className="group flex items-center gap-2 text-lg font-bold text-white/70 hover:text-white transition-colors">
+                    {label}
+                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div>
-          <h4 className="text-white text-xs font-bold uppercase tracking-[0.15em] mb-5">Contact</h4>
-          <ul className="space-y-4 text-sm">
-            <li className="flex gap-3">
-              <MapPin size={17} className="shrink-0 mt-0.5 text-electric-500" />
-              <span className="leading-relaxed">{club.contact.address}</span>
-            </li>
-            <li className="flex gap-3">
-              <Phone size={17} className="shrink-0 mt-0.5 text-electric-500" />
-              <a href={`tel:${club.contact.phone}`} className="hover:text-white">
-                {club.contact.phone} · PABX {club.contact.pabx}
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/30">Contact</p>
+            <div className="mt-6 space-y-4 text-sm text-white/50">
+              <p className="leading-relaxed">{club.contact.address}</p>
+              <a href={`tel:${club.contact.phone}`} className="block text-white hover:text-electric-400 transition-colors font-bold">
+                {club.contact.phone}
               </a>
-            </li>
-            <li className="flex gap-3">
-              <Mail size={17} className="shrink-0 mt-0.5 text-electric-500" />
-              <a href={`mailto:${club.contact.email}`} className="hover:text-white break-all">
+              <a href={`mailto:${club.contact.email}`} className="block hover:text-white transition-colors break-all">
                 {club.contact.email}
               </a>
-            </li>
-          </ul>
+              <p className="text-white/30">PABX {club.contact.pabx}</p>
+              {club.social.facebook && (
+                <a href={club.social.facebook} target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-2 pt-2 text-xs font-bold uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors">
+                  Facebook <ArrowUpRight size={14} />
+                </a>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h4 className="text-white text-xs font-bold uppercase tracking-[0.15em] mb-5">Join us</h4>
-          <p className="text-sm leading-relaxed text-white/45">
-            Free for every JUST student. Create an account and enter your trainer's code.
-          </p>
-          <Link to="/signup" className="btn-electric mt-5 w-full">Get started</Link>
-        </div>
-      </div>
-
-      <div className="border-t border-white/5 relative">
-        <div className="container-wide py-6 text-xs text-white/30 flex flex-col sm:flex-row gap-2 justify-between">
+        <div className="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between text-[11px] uppercase tracking-[0.15em] text-white/25">
           <p>© {new Date().getFullYear()} {club.name}</p>
           <p>{club.university}</p>
         </div>

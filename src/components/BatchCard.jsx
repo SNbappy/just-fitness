@@ -1,51 +1,56 @@
 import { Link } from "react-router-dom";
-import { Users, Calendar, MapPin, ChevronRight } from "lucide-react";
+import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
 import { batchTypeLabel } from "../lib/batches";
 
 export default function BatchCard({ batch, isTrainer }) {
   return (
     <Link
       to={`/batch/${batch.id}`}
-      className="card p-0 overflow-hidden group hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+      className="group relative border border-line bg-surface hover:border-electric-400 transition-colors flex flex-col"
     >
-      <div className="h-2" style={{ background: batch.cover_color || "#0E9F6E" }} />
-      <div className="p-5">
+      <div className="h-1" style={{ background: batch.cover_color || "#2E6BFF" }} />
+
+      <div className="p-7 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-primary-600">
-              {batchTypeLabel(batch.batch_type)}
-            </p>
-            <h3 className="mt-1 text-lg text-body truncate">{batch.name}</h3>
-          </div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-electric-600">
+            {batchTypeLabel(batch.batch_type)}
+          </p>
           {isTrainer && (
-            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider bg-secondary-500/15 text-secondary-700 px-2 py-1 rounded-md">
+            <span className="shrink-0 text-[9px] font-bold uppercase tracking-[0.2em] bg-void text-white px-2.5 py-1">
               Trainer
             </span>
           )}
         </div>
 
+        <h3 className="mt-4 mega text-2xl text-body leading-tight">{batch.name}</h3>
+
         {batch.description && (
-          <p className="mt-2 text-sm text-muted line-clamp-2">{batch.description}</p>
+          <p className="mt-3 text-sm text-muted leading-relaxed line-clamp-2">
+            {batch.description}
+          </p>
         )}
 
-        <div className="mt-4 space-y-1.5 text-xs text-muted">
+        <div className="mt-6 space-y-2 text-xs text-muted">
           {batch.schedule && (
             <p className="flex items-center gap-2">
-              <Calendar size={14} className="text-faint" /> {batch.schedule}
+              <Calendar size={14} className="text-faint shrink-0" /> {batch.schedule}
             </p>
           )}
           {batch.venue && (
             <p className="flex items-center gap-2">
-              <MapPin size={14} className="text-faint" /> {batch.venue}
+              <MapPin size={14} className="text-faint shrink-0" /> {batch.venue}
             </p>
           )}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-line flex items-center justify-between">
-          <span className="text-xs font-semibold text-faint flex items-center gap-1.5">
-            <Users size={14} /> View batch
+        <div className="mt-auto pt-6 flex items-center justify-between border-t border-line">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-faint">
+            Open batch
           </span>
-          <ChevronRight size={16} className="text-primary-600 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowUpRight
+            size={18}
+            className="text-faint group-hover:text-electric-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+          />
         </div>
       </div>
     </Link>

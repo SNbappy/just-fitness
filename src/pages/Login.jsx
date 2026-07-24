@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Dumbbell, Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, ArrowUpRight } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 export default function Login() {
@@ -17,98 +16,133 @@ export default function Login() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-
-    if (signInError) {
-      setError(signInError.message);
-      return;
-    }
+    if (err) return setError(err.message);
     navigate(location.state?.from?.pathname || "/dashboard");
   }
 
+  const inputCls =
+    "w-full bg-carbon border border-white/15 px-4 py-3.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-electric-500";
+  const labelCls =
+    "block text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2";
+
   return (
-    <section className="min-h-[calc(100vh-64px)] grid lg:grid-cols-2">
-      <div className="flex items-center justify-center p-6 sm:p-10 order-2 lg:order-1">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="w-full max-w-sm"
-        >
-          <h1 className="text-2xl font-extrabold text-body">Welcome back</h1>
-          <p className="mt-1 text-sm text-muted">Sign in to your JUST HFC account.</p>
+    <section className="min-h-screen bg-void text-white grid lg:grid-cols-2">
+      <div className="hidden lg:flex flex-col justify-between p-14 border-r border-white/10 grain relative overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-electric-600/20 blur-[140px]" />
+
+        <Link to="/" className="relative flex items-center gap-3">
+          <span className="w-10 h-10 shrink-0">
+            <img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" />
+          </span>
+          <span className="mega text-2xl">JUST HFC</span>
+        </Link>
+
+        <div className="relative">
+          <h2 className="mega text-[clamp(2.5rem,5vw,4.5rem)]">
+            Welcome
+            <br />
+            <span className="text-electric-500">back</span>
+          </h2>
+          <p className="mt-6 max-w-sm text-white/50 leading-relaxed">
+            Your batches, workout plans and progress charts are exactly where
+            you left them.
+          </p>
+
+          <ul className="mt-10 space-y-4 max-w-sm">
+            {[
+              ["01", "Log today's check-in in under a minute"],
+              ["02", "See your batch schedule and announcements"],
+              ["03", "Watch your progress build week by week"],
+            ].map(([n, text]) => (
+              <li key={n} className="flex gap-4 items-baseline border-t border-white/10 pt-4">
+                <span className="mega text-lg text-electric-500 shrink-0">{n}</span>
+                <span className="text-sm text-white/60">{text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="relative text-[10px] uppercase tracking-[0.25em] text-white/25">
+          Jashore University of Science and Technology
+        </p>
+      </div>
+
+      <div className="flex items-center justify-center p-6 sm:p-12">
+        <div className="w-full max-w-sm">
+          <Link to="/" className="lg:hidden flex items-center gap-2.5 mb-10">
+            <span className="w-10 h-10 shrink-0">
+              <img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" />
+            </span>
+            <span className="mega text-2xl">JUST HFC</span>
+          </Link>
+
+          <h1 className="mega text-4xl">Sign in</h1>
+          <p className="mt-3 text-sm text-white/45">Enter your account details.</p>
 
           {error && (
-            <div className="mt-5 flex gap-2 items-start bg-red-50 text-red-700 text-sm rounded-xl px-4 py-3">
+            <div className="mt-6 flex gap-2 items-start bg-red-500/10 border border-red-500/30 text-red-300 text-sm px-4 py-3">
               <AlertCircle size={18} className="shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
-              <label className="text-sm font-semibold text-body">Email</label>
-              <div className="mt-1.5 relative">
-                <Mail size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
-                <input
-                  required
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full rounded-xl border border-line bg-surface pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
+              <label className={labelCls}>Email</label>
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={inputCls}
+                placeholder="you@example.com"
+              />
             </div>
 
             <div>
-              <label className="text-sm font-semibold text-body">Password</label>
-              <div className="mt-1.5 relative">
-                <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
+              <label className={labelCls}>Password</label>
+              <div className="relative">
                 <input
                   required
                   type={showPw ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className={inputCls + " pr-12"}
                   placeholder="Your password"
-                  className="w-full rounded-xl border border-line bg-surface pl-11 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-faint"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/35 hover:text-white"
                 >
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            <button type="submit" disabled={loading} className="btn-primary w-full">
-              {loading ? "Signing in…" : "Sign In"}
+            <button
+              type="submit"
+              disabled={loading}
+              className="group w-full flex items-center justify-between bg-electric-500 hover:bg-electric-600 transition-colors pl-6 pr-2 py-2 min-h-[56px] disabled:opacity-60"
+            >
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em]">
+                {loading ? "Signing in" : "Sign in"}
+              </span>
+              <span className="grid place-items-center w-11 h-11 bg-void group-hover:rotate-45 transition-transform duration-300">
+                <ArrowUpRight size={20} />
+              </span>
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-primary-600 font-semibold hover:underline">
+          <p className="mt-8 text-sm text-white/40">
+            No account yet?{" "}
+            <Link to="/signup" className="text-electric-400 font-bold hover:text-electric-300">
               Create one
             </Link>
           </p>
-        </motion.div>
-      </div>
-
-      <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white p-14 relative overflow-hidden order-1 lg:order-2">
-        <div className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full bg-secondary-500/100/25 blur-3xl animate-float-slow" />
-        <span className="grid place-items-center w-14 h-14 rounded-2xl bg-surface/15 backdrop-blur border border-white/25 mb-8">
-          <Dumbbell size={26} />
-        </span>
-        <h2 className="text-3xl font-extrabold leading-tight">
-          Pick up right where you left off
-        </h2>
-        <p className="mt-4 text-primary-100 max-w-sm leading-relaxed">
-          Your batches, progress charts and workout plans are all waiting for you.
-        </p>
+        </div>
       </div>
     </section>
   );

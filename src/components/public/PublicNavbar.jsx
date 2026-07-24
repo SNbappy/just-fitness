@@ -6,22 +6,22 @@ import { useAuth } from "../../lib/AuthContext";
 import MobileMenu from "./MobileMenu";
 
 const NAV = [
-  { label: "home", to: "/" },
+  { label: "Home", to: "/" },
   {
-    label: "club",
+    label: "Club",
     items: [
       { to: "/about", label: "About us", desc: "Mission, history and how to join", icon: Info },
       { to: "/notices", label: "Notices", desc: "Official announcements", icon: Bell },
     ],
   },
   {
-    label: "activities",
+    label: "Activities",
     items: [
       { to: "/gallery", label: "Gallery", desc: "Photos and videos from sessions", icon: Image },
       { to: "/events", label: "Events", desc: "Tournaments and upcoming programmes", icon: CalendarDays },
     ],
   },
-  { label: "contact", to: "/contact" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export default function PublicNavbar() {
@@ -50,19 +50,17 @@ export default function PublicNavbar() {
     <>
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-smooth ${
-          transparent ? "bg-transparent" : "bg-void/90 backdrop-blur-xl border-b border-white/10"
+          transparent ? "bg-transparent" : "bg-void border-b border-white/10"
         }`}
       >
-        <nav className="container-wide flex items-center justify-between h-[72px]">
+        <nav className="container-wide flex items-center justify-between h-[76px]">
           <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-            <span className={`grid place-items-center w-10 h-10 rounded-xl transition-transform group-hover:scale-105 ${transparent ? "bg-white text-primary-600" : "bg-electric-500 text-white"}`}>
-              <Dumbbell size={20} strokeWidth={2.5} />
-            </span>
+            <span className="w-10 h-10 shrink-0"><img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" /></span>
             <span className="leading-none">
-              <span className={`block font-display font-extrabold text-lg "text-white"`}>
+              <span className={`block mega text-lg text-white`}>
                 JUST HFC
               </span>
-              <span className={`block text-[10px] font-medium mt-1 "text-white/45"`}>
+              <span className={`block text-[10px] font-medium mt-1 text-white/45`}>
                 Health &amp; Fitness Club
               </span>
             </span>
@@ -73,8 +71,8 @@ export default function PublicNavbar() {
               item.items ? (
                 <li key={item.label} className="relative" onMouseEnter={() => setOpenMenu(item.label)}>
                   <button
-                    className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold lowercase tracking-wide transition-colors ${
-                      transparent ? "text-white hover:text-white/80" : "text-white/60 hover:text-white"
+                    className={`flex items-center gap-1 px-4 py-2 text-sm font-bold tracking-wide transition-colors ${
+                      transparent ? "text-white hover:text-white/80" : "text-white/45 hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -90,11 +88,11 @@ export default function PublicNavbar() {
                         transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute left-0 top-full pt-3 w-80"
                       >
-                        <div className="bg-carbon border border-white/10 p-2">
+                        <div className="bg-carbon border border-white/10 p-2 rounded-none">
                           {item.items.map((sub) => (
                             <Link key={sub.to} to={sub.to}
-                              className="flex gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">
-                              <span className="grid place-items-center w-10 h-10 rounded-lg bg-electric-500/15 text-electric-400 shrink-0 group-hover:bg-electric-500 group-hover:text-white transition-colors">
+                              className="flex gap-3 p-3 hover:bg-white/5 transition-colors group">
+                              <span className="grid place-items-center w-10 h-10 bg-electric-500/15 text-electric-400 shrink-0 group-hover:bg-electric-500 group-hover:text-white transition-colors">
                                 <sub.icon size={18} />
                               </span>
                               <span className="min-w-0">
@@ -113,10 +111,10 @@ export default function PublicNavbar() {
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
-                      `relative px-4 py-2 rounded-lg text-sm font-bold lowercase tracking-wide transition-colors ${
+                      `relative px-4 py-2 text-sm font-bold tracking-wide transition-colors ${
                         transparent
                           ? "text-white hover:text-white/80"
-                          : isActive ? "text-body" : "text-white/60 hover:text-white"
+                          : isActive ? "text-white" : "text-white/45 hover:text-white"
                       }`
                     }
                   >
@@ -125,7 +123,7 @@ export default function PublicNavbar() {
                         {item.label}
                         {isActive && (
                           <motion.span layoutId="nav-underline"
-                            className="absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-primary-500" />
+                            className="absolute left-3 right-3 -bottom-1 h-[3px] bg-electric-500" />
                         )}
                       </>
                     )}
@@ -137,16 +135,16 @@ export default function PublicNavbar() {
 
           <div className="hidden lg:flex items-center gap-2">
             {user ? (
-              <Link to="/dashboard" className="btn-electric">
+              <Link to="/dashboard" className="btn border border-white/25 text-white hover:bg-white hover:text-void rounded-none px-6 text-xs uppercase tracking-[0.2em] font-bold">
                 <LayoutDashboard size={17} /> Dashboard
               </Link>
             ) : (
               <>
                 <Link to="/login"
-                  className={`btn ${transparent ? "text-white/85 hover:bg-white/10" : "text-muted hover:text-white hover:bg-white/10"}`}>
+                  className={`btn ${transparent ? "text-white/85 hover:bg-white/10" : "text-white/60 hover:text-white hover:bg-white/10"}`}>
                   Sign in
                 </Link>
-                <Link to="/signup" className="btn-electric">Join the club</Link>
+                <Link to="/signup" className="btn border border-white/25 text-white hover:bg-white hover:text-void rounded-none px-6 text-xs uppercase tracking-[0.2em] font-bold">Join the club</Link>
               </>
             )}
           </div>
@@ -155,7 +153,7 @@ export default function PublicNavbar() {
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className={`grid place-items-center w-11 h-11 rounded-xl transition-colors ${
+              className={`grid place-items-center w-11 h-11 transition-colors ${
                 transparent ? "text-white hover:bg-white/10" : "text-white hover:bg-white/10"
               }`}
             >

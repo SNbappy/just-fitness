@@ -1,17 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Avatar from "../Avatar";
 import { Users, Shield, UserMinus } from "lucide-react";
-
-export function Avatar({ name, url, size = 12 }) {
-  const initials = (name || "?").split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-  const cls = `w-${size} h-${size}`;
-  if (url) return <img src={url} alt={name} className={`${cls} rounded-xl object-cover shrink-0`} />;
-  return (
-    <span className={`grid place-items-center ${cls} rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 text-white font-bold shrink-0`}>
-      {initials}
-    </span>
-  );
-}
 
 export default function BatchMembers({ batchId, roster, trainer, isTrainer, currentUserId, onRemove }) {
   return (

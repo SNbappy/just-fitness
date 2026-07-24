@@ -1,8 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   LayoutDashboard, Users, CirclePlus, TrendingUp, Wrench,
-  Dumbbell, Globe, ChevronLeft,
+  Globe, ChevronLeft,
 } from "lucide-react";
 
 const ITEMS = [
@@ -16,37 +15,36 @@ const ITEMS = [
 export default function AppSidebar({ collapsed, onToggle }) {
   return (
     <aside
-      className={`hidden lg:flex flex-col fixed left-0 top-0 bottom-0 z-40 bg-surface border-r border-line transition-[width] duration-300 ease-smooth ${
-        collapsed ? "w-[76px]" : "w-[248px]"
-      }`}
+      className={`hidden lg:flex flex-col fixed left-0 top-0 bottom-0 z-40 bg-ink-900 border-r border-white/[0.08] transition-[width] duration-300 ease-smooth ${collapsed ? "w-[76px]" : "w-[248px]"
+        }`}
     >
-      <div className="h-16 flex items-center gap-2.5 px-4 shrink-0">
-        <Link to="/" className="grid place-items-center w-10 h-10 rounded-xl bg-primary-500 text-white shadow-glow shrink-0">
-          <Dumbbell size={20} strokeWidth={2.5} />
+      <div className="h-[72px] flex items-center gap-3 px-5 shrink-0 border-b border-white/[0.08]">
+        <Link to="/" className="w-9 h-9 shrink-0">
+          <img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" />
         </Link>
-        {!collapsed && <span className="font-display font-extrabold text-body text-base truncate">JUST HFC</span>}
+        {!collapsed && <span className="mega text-lg text-white truncate">JUST HFC</span>}
       </div>
 
-      <nav className="flex-1 px-3 py-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 py-4">
+        <ul>
           {ITEMS.map((item) => (
             <li key={item.to}>
               <NavLink
                 to={item.to}
                 title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
-                  `relative flex items-center gap-3 rounded-xl px-3 h-11 text-sm font-semibold transition-colors ${
-                    isActive ? "bg-primary-500/10 text-primary-500" : "text-muted hover:text-body hover:bg-elevated"
+                  `relative flex items-center gap-3.5 px-5 h-12 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${isActive
+                    ? "text-white bg-white/[0.06]"
+                    : "text-white/45 hover:text-white hover:bg-white/[0.04]"
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
                     {isActive && (
-                      <motion.span layoutId="sidebar-active"
-                        className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-primary-500" />
+                      <span className="absolute left-0 inset-y-0 w-[3px] bg-electric-500" />
                     )}
-                    <item.icon size={20} className="shrink-0" />
+                    <item.icon size={19} className="shrink-0" strokeWidth={2} />
                     {!collapsed && <span className="truncate">{item.label}</span>}
                   </>
                 )}
@@ -56,15 +54,20 @@ export default function AppSidebar({ collapsed, onToggle }) {
         </ul>
       </nav>
 
-      <div className="p-3 border-t border-line space-y-1">
-        <Link to="/" title={collapsed ? "Public site" : undefined}
-          className="flex items-center gap-3 rounded-xl px-3 h-11 text-sm font-semibold text-muted hover:text-body hover:bg-elevated transition-colors">
-          <Globe size={20} className="shrink-0" />
+      <div className="border-t border-white/[0.08]">
+        <Link
+          to="/"
+          title={collapsed ? "Public site" : undefined}
+          className="flex items-center gap-3.5 px-5 h-12 text-[11px] font-bold uppercase tracking-[0.15em] text-white/45 hover:text-white hover:bg-white/[0.04] transition-colors"
+        >
+          <Globe size={19} className="shrink-0" strokeWidth={2} />
           {!collapsed && <span>Public site</span>}
         </Link>
-        <button onClick={onToggle}
-          className="w-full flex items-center gap-3 rounded-xl px-3 h-11 text-sm font-semibold text-muted hover:text-body hover:bg-elevated transition-colors">
-          <ChevronLeft size={20} className={`shrink-0 transition-transform ${collapsed ? "rotate-180" : ""}`} />
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center gap-3.5 px-5 h-12 text-[11px] font-bold uppercase tracking-[0.15em] text-white/45 hover:text-white hover:bg-white/[0.04] transition-colors border-t border-white/[0.08]"
+        >
+          <ChevronLeft size={19} className={`shrink-0 transition-transform ${collapsed ? "rotate-180" : ""}`} strokeWidth={2} />
           {!collapsed && <span>Collapse</span>}
         </button>
       </div>

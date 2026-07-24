@@ -37,9 +37,7 @@ export default function MobileMenu({ open, onClose, nav }) {
           >
             <div className="flex items-center justify-between h-[72px] px-5 shrink-0">
               <div className="flex items-center gap-2.5">
-                <span className="grid place-items-center w-10 h-10 rounded-xl bg-primary-500 text-white">
-                  <Dumbbell size={20} strokeWidth={2.5} />
-                </span>
+                <span className="w-10 h-10 shrink-0"><img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" /></span>
                 <span className="font-display font-extrabold text-lg text-white">JUST HFC</span>
               </div>
               <button onClick={onClose} aria-label="Close menu"
@@ -73,13 +71,13 @@ export default function MobileMenu({ open, onClose, nav }) {
               className="p-5 pb-8 shrink-0"
             >
               {user ? (
-                <Link to="/dashboard" onClick={onClose} className="btn-primary w-full text-base py-4">
+                <Link to="/dashboard" onClick={onClose} className="btn bg-electric-500 text-white hover:bg-electric-600 w-full text-base py-4 rounded-none">
                   Go to dashboard <ArrowRight size={18} />
                 </Link>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
-                  <Link to="/login" onClick={onClose} className="btn-glass text-base py-4">Sign in</Link>
-                  <Link to="/signup" onClick={onClose} className="btn-primary text-base py-4">Join</Link>
+                  <Link to="/login" onClick={onClose} className="btn bg-white/10 text-white border border-white/25 text-base py-4 rounded-none">Sign in</Link>
+                  <Link to="/signup" onClick={onClose} className="btn bg-electric-500 text-white hover:bg-electric-600 text-base py-4 rounded-none">Join</Link>
                 </div>
               )}
 

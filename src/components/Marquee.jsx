@@ -1,6 +1,6 @@
 export default function Marquee({
   text = "JUST HEALTH & FITNESS CLUB",
-  repeat = 8,
+  repeat = 6,
   reverse = false,
   className = "",
   size = "text-[clamp(2rem,5vw,4.5rem)]",
@@ -12,9 +12,9 @@ export default function Marquee({
         {[0, 1].map((dup) => (
           <div key={dup} className="flex shrink-0">
             {items.map((_, i) => (
-              <span key={i} className={`mega ${size} px-6 whitespace-nowrap`}>
+              <span key={i} className={`mega ${size} whitespace-nowrap flex items-center`}>
                 {text}
-                <span className="text-electric-500 px-2">/</span>
+                <span className="text-electric-500 mx-4">/</span>
               </span>
             ))}
           </div>

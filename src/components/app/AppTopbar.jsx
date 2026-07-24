@@ -1,14 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Dumbbell, LogOut, User, Globe, ChevronDown, Shield } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { LogOut, User, Globe, ChevronDown, Shield } from "lucide-react";
 import { useAuth } from "../../lib/AuthContext";
+import { firstName, initials } from "../../lib/names";
+
+const TITLES = {
+  "/dashboard": "Dashboard",
+  "/batches": "Batches",
+  "/track": "Daily check-in",
+  "/progress": "Progress",
+  "/tools": "Tools",
+  "/join-batch": "Join a batch",
+  "/create-batch": "Create batch",
+};
 
 export default function AppTopbar() {
   const { profile, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     function onClick(e) {
@@ -23,68 +34,60 @@ export default function AppTopbar() {
     navigate("/");
   }
 
-  const initials = (profile?.full_name || "?")
-    .split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  const crumb = TITLES[pathname] || (pathname.startsWith("/batch/") ? "Batch" : "");
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-surface/80 backdrop-blur-xl border-b border-line">
+    <header className="sticky top-0 z-30 h-[72px] bg-surface border-b border-line">
       <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-4">
         <Link to="/dashboard" className="flex lg:hidden items-center gap-2.5">
-          <span className="grid place-items-center w-9 h-9 rounded-xl bg-primary-500 text-white">
-            <Dumbbell size={18} strokeWidth={2.5} />
+          <span className="w-9 h-9 shrink-0">
+            <img src="/images/logo.png" alt="JUST HFC" className="w-full h-full object-contain" />
           </span>
-          <span className="font-display font-extrabold text-body">JUST HFC</span>
+          <span className="mega text-lg text-body">JUST HFC</span>
         </Link>
 
-        <div className="hidden lg:block" />
+        <p className="hidden lg:block text-[10px] font-bold uppercase tracking-[0.25em] text-faint">
+          {crumb}
+        </p>
 
-        <div className="flex items-center gap-1.5">
+        <div className="relative" ref={ref}>
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 border border-line hover:border-ink-300 transition-colors"
+          >
+            <span className="grid place-items-center w-8 h-8 bg-void text-white text-[10px] font-bold tracking-wider">
+              {initials(profile?.full_name)}
+            </span>
+            <span className="hidden sm:block text-[11px] font-bold uppercase tracking-[0.12em] text-body max-w-[110px] truncate">
+              {firstName(profile?.full_name)}
+            </span>
+            <ChevronDown size={14} className={`text-faint transition-transform ${open ? "rotate-180" : ""}`} />
+          </button>
 
-          <div className="relative" ref={ref}>
-            <button onClick={() => setOpen((v) => !v)}
-              className="flex items-center gap-2 rounded-xl pl-1.5 pr-2.5 py-1.5 hover:bg-elevated transition-colors">
-              <span className="grid place-items-center w-8 h-8 rounded-lg bg-primary-500 text-white text-xs font-bold">
-                {initials}
-              </span>
-              <span className="hidden sm:block text-sm font-semibold text-body max-w-[120px] truncate">
-                {profile?.full_name?.split(" ")[0]}
-              </span>
-              <ChevronDown size={15} className={`text-faint transition-transform ${open ? "rotate-180" : ""}`} />
-            </button>
+          {open && (
+            <div className="absolute right-0 top-full mt-1.5 w-60 bg-surface border border-line shadow-lift">
+              <div className="px-4 py-3.5 border-b border-line">
+                <p className="text-sm font-bold text-body truncate">{profile?.full_name}</p>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-faint flex items-center gap-1.5">
+                  {profile?.role === "admin" && <Shield size={11} className="text-electric-500" />}
+                  {profile?.role}
+                </p>
+              </div>
 
-            <AnimatePresence>
-              {open && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-60 card p-2 shadow-lift"
-                >
-                  <div className="px-3 py-2.5 border-b border-line mb-1">
-                    <p className="text-sm font-bold text-body truncate">{profile?.full_name}</p>
-                    <p className="text-xs text-muted capitalize flex items-center gap-1.5 mt-0.5">
-                      {profile?.role === "admin" && <Shield size={12} className="text-primary-500" />}
-                      {profile?.role}
-                    </p>
-                  </div>
-
-                  <Link to="/dashboard" onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-muted hover:text-body hover:bg-elevated transition-colors">
-                    <User size={17} /> My profile
-                  </Link>
-                  <Link to="/" onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-muted hover:text-body hover:bg-elevated transition-colors">
-                    <Globe size={17} /> Public site
-                  </Link>
-                  <button onClick={handleSignOut}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-primary-500 hover:bg-primary-500/10 transition-colors">
-                    <LogOut size={17} /> Sign out
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+              <Link to="/dashboard" onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-muted hover:text-body hover:bg-elevated transition-colors">
+                <User size={16} /> My profile
+              </Link>
+              <Link to="/" onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-muted hover:text-body hover:bg-elevated transition-colors border-t border-line">
+                <Globe size={16} /> Public site
+              </Link>
+              <button onClick={handleSignOut}
+                className="w-full flex items-center gap-3 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-electric-600 hover:bg-electric-500/5 transition-colors border-t border-line">
+                <LogOut size={16} /> Sign out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

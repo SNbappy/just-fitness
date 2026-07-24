@@ -1,34 +1,54 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Plus, KeyRound, Users } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { getMyBatches, getBatchesITrain } from "../lib/batches";
 import BatchCard from "../components/BatchCard";
 import Spinner from "../components/Spinner";
+import AppPageHeader from "../components/app/AppPageHeader";
+
+function Empty({ icon: Icon, title, desc, to, cta }) {
+  return (
+    <div className="border border-line bg-surface p-14 text-center">
+      <Icon className="mx-auto text-faint" size={32} />
+      <p className="mt-5 mega text-xl text-body">{title}</p>
+      <p className="mt-2 text-sm text-muted max-w-sm mx-auto">{desc}</p>
+      <Link to={to} className="btn-primary mt-7">{cta}</Link>
+    </div>
+  );
+}
+
+function SectionLabel({ children, count }) {
+  return (
+    <div className="flex items-baseline gap-3 pb-4 border-b border-line">
+      <h2 className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted">
+        {children}
+      </h2>
+      <span className="mega text-sm text-faint tabular">{count}</span>
+    </div>
+  );
+}
 
 export default function Batches() {
   const { user, profile } = useAuth();
-  const [myBatches, setMyBatches] = useState([]);
-  const [trainingBatches, setTrainingBatches] = useState([]);
+  const [mine, setMine] = useState([]);
+  const [training, setTraining] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const canTrain = profile?.role === "trainer" || profile?.role === "admin";
 
   useEffect(() => {
     let active = true;
-
     async function load() {
-      const [mine, training] = await Promise.all([
+      const [a, b] = await Promise.all([
         getMyBatches(user.id),
         canTrain ? getBatchesITrain(user.id) : Promise.resolve({ data: [] }),
       ]);
       if (!active) return;
-      setMyBatches(mine.data || []);
-      setTrainingBatches(training.data || []);
+      setMine(a.data || []);
+      setTraining(b.data || []);
       setLoading(false);
     }
-
     if (user) load();
     return () => { active = false; };
   }, [user, canTrain]);
@@ -36,68 +56,63 @@ export default function Batches() {
   if (loading) return <Spinner full />;
 
   return (
-    <section className="section">
-      <div className="container-app">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Training</p>
-            <h1 className="mt-2 text-3xl font-extrabold text-body">My Batches</h1>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Link to="/join-batch" className="btn-outline">
-              <KeyRound size={17} /> Join with Code
-            </Link>
-            {canTrain && (
-              <Link to="/create-batch" className="btn-primary">
-                <Plus size={18} /> Create Batch
-              </Link>
-            )}
-          </div>
-        </motion.div>
-
+    <>
+      <AppPageHeader eyebrow="Training" title="My" accent="batches">
+        <Link to="/join-batch" className="btn-outline">
+          <KeyRound size={15} /> Join with code
+        </Link>
         {canTrain && (
-          <div className="mt-10">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-faint">
-              Batches I Train ({trainingBatches.length})
-            </h2>
-            {trainingBatches.length === 0 ? (
-              <div className="mt-4 card p-10 text-center">
-                <Users className="mx-auto text-faint" size={36} />
-                <p className="mt-3 font-semibold text-muted">No batches yet</p>
-                <p className="text-sm text-faint mt-1">Create your first training batch to get a join code.</p>
-                <Link to="/create-batch" className="btn-primary mt-5">
-                  <Plus size={18} /> Create Batch
-                </Link>
+          <Link to="/create-batch" className="btn-primary">
+            <Plus size={16} /> Create batch
+          </Link>
+        )}
+      </AppPageHeader>
+
+      <div className="container-app py-10 space-y-12">
+        {canTrain && (
+          <section>
+            <SectionLabel count={String(training.length).padStart(2, "0")}>
+              Batches I train
+            </SectionLabel>
+            {training.length === 0 ? (
+              <div className="mt-5">
+                <Empty
+                  icon={Users}
+                  title="No batches yet"
+                  desc="Create your first training batch and share the join code with students."
+                  to="/create-batch"
+                  cta="Create batch"
+                />
               </div>
             ) : (
-              <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {trainingBatches.map((b) => <BatchCard key={b.id} batch={b} isTrainer />)}
+              <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {training.map((b) => <BatchCard key={b.id} batch={b} isTrainer />)}
               </div>
             )}
-          </div>
+          </section>
         )}
 
-        <div className="mt-12">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-faint">
-            Batches I've Joined ({myBatches.length})
-          </h2>
-          {myBatches.length === 0 ? (
-            <div className="mt-4 card p-10 text-center">
-              <KeyRound className="mx-auto text-faint" size={36} />
-              <p className="mt-3 font-semibold text-muted">You haven't joined a batch yet</p>
-              <p className="text-sm text-faint mt-1">Ask your trainer for the 6-character join code.</p>
-              <Link to="/join-batch" className="btn-primary mt-5">
-                <KeyRound size={17} /> Join a Batch
-              </Link>
+        <section>
+          <SectionLabel count={String(mine.length).padStart(2, "0")}>
+            Batches I've joined
+          </SectionLabel>
+          {mine.length === 0 ? (
+            <div className="mt-5">
+              <Empty
+                icon={KeyRound}
+                title="Not in a batch yet"
+                desc="Ask your trainer for the six-character join code or scan their QR poster."
+                to="/join-batch"
+                cta="Join a batch"
+              />
             </div>
           ) : (
-            <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {myBatches.map((b) => <BatchCard key={b.id} batch={b} />)}
+            <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {mine.map((b) => <BatchCard key={b.id} batch={b} />)}
             </div>
           )}
-        </div>
+        </section>
       </div>
-    </section>
+    </>
   );
 }

@@ -1,43 +1,58 @@
-import PageHeader from "../components/PageHeader";
 import { club } from "../data/club";
-import { MapPin, Phone, Mail, Building2 } from "lucide-react";
+import PageHeader from "../components/PageHeader";
+
+const ROWS = [
+  ["Office", club.contact.address],
+  ["Cell phone", club.contact.phone, `tel:${club.contact.phone}`],
+  ["PABX", club.contact.pabx],
+  ["Email", club.contact.email, `mailto:${club.contact.email}`],
+];
 
 export default function Contact() {
   return (
     <>
       <PageHeader
-        eyebrow="Get in Touch"
-        title="Contact Us"
-        subtitle="Visit the Office of the Physical Education, or reach us by phone or email."
+        eyebrow="Get in touch"
+        title="Contact"
+        subtitle="Visit the Office of the Physical Education on campus, or reach the director by phone or email."
       />
-      <section className="section">
-        <div className="container-app grid lg:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            {[
-              { icon: MapPin, label: "Address", value: club.contact.address },
-              { icon: Phone, label: "Cell Phone", value: club.contact.phone, href: `tel:${club.contact.phone}` },
-              { icon: Building2, label: "PABX", value: club.contact.pabx },
-              { icon: Mail, label: "Email", value: club.contact.email, href: `mailto:${club.contact.email}` },
-            ].map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="card p-6 flex gap-4">
-                <span className="grid place-items-center w-12 h-12 shrink-0 rounded-xl bg-primary-500/10 text-primary-600">
-                  <Icon size={22} />
-                </span>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-faint">{label}</p>
-                  {href ? (
-                    <a href={href} className="text-body font-semibold hover:text-primary-600 break-all">{value}</a>
-                  ) : (
-                    <p className="text-body leading-relaxed">{value}</p>
-                  )}
+
+      <section className="bg-void text-white py-20 sm:py-28 border-t border-white/10">
+        <div className="container-wide grid lg:grid-cols-2 gap-14">
+          <div>
+            <h2 className="mega text-[clamp(1.8rem,4vw,2.75rem)]">
+              Club<span className="text-electric-500"> office</span>
+            </h2>
+
+            <dl className="mt-10">
+              {ROWS.map(([label, value, href]) => (
+                <div key={label} className="grid sm:grid-cols-[130px,1fr] gap-1 sm:gap-8 py-6 border-t border-white/10">
+                  <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/35 pt-1">
+                    {label}
+                  </dt>
+                  <dd className="text-white/80 leading-relaxed break-words">
+                    {href ? (
+                      <a href={href} className="hover:text-electric-400 transition-colors">{value}</a>
+                    ) : value}
+                  </dd>
                 </div>
-              </div>
-            ))}
+              ))}
+              <div className="border-t border-white/10" />
+            </dl>
+
+            <div className="mt-10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">Director</p>
+              <p className="mt-3 mega text-2xl">{club.director.name}</p>
+              <p className="mt-1 text-sm text-white/50">
+                {club.director.designation}, {club.director.office}
+              </p>
+            </div>
           </div>
-          <div className="card overflow-hidden min-h-[340px]">
+
+          <div className="border border-white/15 min-h-[420px] lg:min-h-full">
             <iframe
               title="JUST campus map"
-              className="w-full h-full min-h-[340px] border-0"
+              className="w-full h-full min-h-[420px] border-0 grayscale contrast-125 opacity-90"
               loading="lazy"
               src={`https://www.google.com/maps?q=${encodeURIComponent(club.contact.mapQuery)}&output=embed`}
             />
