@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Camera, Save, Check, AlertCircle, Loader2 } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { supabase } from "../lib/supabase";
-import { uploadAvatar } from "../lib/avatar";
+import { uploadAvatarBlob } from "../lib/avatar";
 import Avatar from "../components/Avatar";
+import AvatarCropper from "../components/AvatarCropper";
+import ImageViewer from "../components/ImageViewer";
 import Spinner from "../components/Spinner";
 import AppPageHeader from "../components/app/AppPageHeader";
 
@@ -42,7 +44,9 @@ export default function Profile() {
     const [saved, setSaved] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState("");
-    const fileRef = useRef(null);
+    const [cropFile, setCropFile] = useState(null);
+  const [viewing, setViewing] = useState(false);
+  const fileRef = useRef(null);
 
     useEffect(() => {
         if (profile) {
@@ -56,13 +60,19 @@ export default function Profile() {
         setSaved(false);
     }
 
-    async function handlePhoto(e) {
+    function handlePhoto(e) {
         const file = e.target.files?.[0];
         if (!file) return;
         setError("");
+        setCropFile(file);
+        e.target.value = "";
+    }
+
+    async function handleCropped(blob) {
         setUploading(true);
-        const { url, error: upErr } = await uploadAvatar(file, user.id);
+        const { url, error: upErr } = await uploadAvatarBlob(blob, user.id);
         setUploading(false);
+        setCropFile(null);
         if (upErr) return setError(upErr.message);
         setForm((f) => ({ ...f, photo_url: url }));
         await refreshProfile();
@@ -117,7 +127,13 @@ export default function Profile() {
 
                 <div className="border border-line bg-surface p-7 flex flex-col sm:flex-row gap-7 items-center sm:items-start">
                     <div className="relative shrink-0">
-                        <Avatar name={form.full_name} url={form.photo_url} size="xl" />
+                        <button
+              type="button"
+              onClick={() => form.photo_url && setViewing(true)}
+              className={form.photo_url ? "cursor-zoom-in" : "cursor-default"}
+            >
+              <Avatar name={form.full_name} url={form.photo_url} size="xl" />
+            </button>
                         <button
                             type="button"
                             onClick={() => fileRef.current?.click()}
@@ -299,6 +315,17 @@ export default function Profile() {
                     </div>
                 </form>
             </div>
-        </>
+            {cropFile && (
+          <AvatarCropper
+            file={cropFile}
+            saving={uploading}
+            onCancel={() => setCropFile(null)}
+            onConfirm={handleCropped}
+          />
+        )}
+        {viewing && (
+          <ImageViewer src={form.photo_url} alt={form.full_name} onClose={() => setViewing(false)} />
+        )}
+    </>
     );
 }

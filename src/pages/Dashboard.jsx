@@ -6,6 +6,7 @@ import { useAuth } from "../lib/AuthContext";
 import { supabase } from "../lib/supabase";
 import Spinner from "../components/Spinner";
 import AppPageHeader from "../components/app/AppPageHeader";
+import ProfileNudge from "../components/app/ProfileNudge";
 
 const GOALS = [
   { value: "weight_loss", label: "Weight loss" },
@@ -87,6 +88,7 @@ export default function Dashboard() {
       </AppPageHeader>
 
       <div className="container-app py-10">
+        <div className="mb-6"><ProfileNudge /></div>
         <div className="grid grid-cols-2 lg:grid-cols-4 border border-line bg-surface">
           {stats.map((s, i) => (
             <div key={s.label} className={`p-6 ${i % 2 === 1 ? "border-l" : ""} ${i >= 2 ? "border-t" : ""} lg:border-t-0 ${i > 0 ? "lg:border-l" : ""} border-line`}>

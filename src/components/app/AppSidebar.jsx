@@ -1,6 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import {
-  LayoutDashboard, Users, CirclePlus, TrendingUp, Wrench,
+  LayoutDashboard, Users, CirclePlus, TrendingUp, Wrench, UserRound,
   Globe, ChevronLeft,
 } from "lucide-react";
 
@@ -10,6 +10,7 @@ const ITEMS = [
   { to: "/track", label: "Daily check-in", icon: CirclePlus },
   { to: "/progress", label: "Progress", icon: TrendingUp },
   { to: "/tools", label: "Tools", icon: Wrench },
+  { to: "/profile", label: "My profile", icon: UserRound },
 ];
 
 export default function AppSidebar({ collapsed, onToggle }) {

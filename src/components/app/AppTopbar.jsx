@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogOut, User, Globe, ChevronDown, Shield } from "lucide-react";
 import { useAuth } from "../../lib/AuthContext";
-import { firstName, initials } from "../../lib/names";
+import { firstName } from "../../lib/names";
+import Avatar from "../Avatar";
 
 const TITLES = {
   "/dashboard": "Dashboard",
@@ -55,9 +56,7 @@ export default function AppTopbar() {
             onClick={() => setOpen((v) => !v)}
             className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 border border-line hover:border-ink-300 transition-colors"
           >
-            <span className="grid place-items-center w-8 h-8 bg-void text-white text-[10px] font-bold tracking-wider">
-              {initials(profile?.full_name)}
-            </span>
+            <Avatar name={profile?.full_name} url={profile?.photo_url} size="sm" className="!w-8 !h-8" />
             <span className="hidden sm:block text-[11px] font-bold uppercase tracking-[0.12em] text-body max-w-[110px] truncate">
               {firstName(profile?.full_name)}
             </span>
@@ -66,15 +65,18 @@ export default function AppTopbar() {
 
           {open && (
             <div className="absolute right-0 top-full mt-1.5 w-60 bg-surface border border-line shadow-lift">
-              <div className="px-4 py-3.5 border-b border-line">
+              <div className="px-4 py-3.5 border-b border-line flex items-center gap-3">
+                <Avatar name={profile?.full_name} url={profile?.photo_url} size="md" />
+                <div className="min-w-0">
                 <p className="text-sm font-bold text-body truncate">{profile?.full_name}</p>
                 <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-faint flex items-center gap-1.5">
                   {profile?.role === "admin" && <Shield size={11} className="text-electric-500" />}
                   {profile?.role}
                 </p>
+                </div>
               </div>
 
-              <Link to="/dashboard" onClick={() => setOpen(false)}
+              <Link to="/profile" onClick={() => setOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-muted hover:text-body hover:bg-elevated transition-colors">
                 <User size={16} /> My profile
               </Link>

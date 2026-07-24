@@ -74,3 +74,20 @@ export async function uploadAvatar(file, userId) {
     if (dbErr) return { error: dbErr };
     return { url };
 }
+export async function uploadAvatarBlob(blob, userId) {
+  const path = `${userId}/avatar.jpg`;
+  const { error: upErr } = await supabase.storage
+    .from("avatars")
+    .upload(path, blob, { upsert: true, contentType: "image/jpeg", cacheControl: "3600" });
+  if (upErr) return { error: upErr };
+
+  const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+  const url = `${data.publicUrl}?v=${Date.now()}`;
+
+  const { error: dbErr } = await supabase
+    .from("profiles")
+    .update({ photo_url: url, updated_at: new Date().toISOString() })
+    .eq("id", userId);
+  if (dbErr) return { error: dbErr };
+  return { url };
+}
